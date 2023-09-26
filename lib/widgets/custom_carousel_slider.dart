@@ -17,7 +17,7 @@ CarouselSlider CustomSlider(BuildContext context) {
       enlargeCenterPage: true,
       // enlargeFactor : 0.2,
     ),
-    items: ["women/sneakers/wsk1.jpg", "men/dress/md1.jpg", "women/heels/ws1.jpg", "girls/sandals/ks1.jpg"].map((i) {
+    items: ["women/sneakers/wsk1.jpg", "men/dress/md1.jpg", "women/heels/ws1.jpg", "girls/sandals/gsa2.jpg"].map((i) {
       return Builder(
         builder: (BuildContext context) {
           return Container(
