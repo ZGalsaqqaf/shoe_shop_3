@@ -50,7 +50,7 @@ Widget CustomCardNoDetails(BuildContext context) {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 88, 162, 223).withOpacity(0.7),
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),

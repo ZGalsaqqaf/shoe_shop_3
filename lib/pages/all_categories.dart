@@ -40,6 +40,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
     List<AllCategoriesClass> thisCategory = getThisCategoryList();
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: Container(

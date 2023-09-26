@@ -41,6 +41,7 @@ class _CategoryPageState extends State<CategoryPage> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: Container(

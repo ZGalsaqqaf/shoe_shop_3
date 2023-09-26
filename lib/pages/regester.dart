@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -41,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "First Name"),
+                    decoration: CustomInputDecoration(context, "First Name"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your first name';
@@ -51,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Last Name"),
+                    decoration: CustomInputDecoration(context, "Last Name"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your last name';
@@ -61,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Phone Number"),
+                    decoration: CustomInputDecoration(context, "Phone Number"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your phone number';
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Country"),
+                    decoration: CustomInputDecoration(context, "Country"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your country';
@@ -89,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Address"),
+                    decoration: CustomInputDecoration(context, "Address"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your Address';
@@ -99,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Username"),
+                    decoration: CustomInputDecoration(context, "Username"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a username';
@@ -112,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Emali"),
+                    decoration: CustomInputDecoration(context, "Emali"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -132,14 +133,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           width: 2,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                       ),
                       suffixIcon: GestureDetector(
@@ -176,14 +177,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           width: 2,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                       ),
                       suffixIcon: GestureDetector(
@@ -222,7 +223,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       Text(
                         'I agree to the terms and conditions',
-                        style: TextStyle(fontSize: 16.0),
                       ),
                     ],
                   ),
@@ -239,7 +239,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         }
                       }
                     },
-                    child: Text('Register'),
+                    child: Text('Submit',
+                    style: Theme.of(context).textTheme.headline5,),
                   ),
                   SizedBox(height: 16.0),
                   TextButton(
@@ -250,7 +251,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         }),
                       );
                     },
-                    child: Text('Already have an account? Login'),
+                    child: Text('Already have an account? Login',
+                          style: Theme.of(context).textTheme.bodyText1,),
                   ),
                 ],
               ),

@@ -65,6 +65,7 @@ class _BaseCategoriesPageState extends State<BaseCategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: Container(

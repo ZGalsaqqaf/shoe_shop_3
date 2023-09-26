@@ -33,6 +33,7 @@ class _ItemPageState extends State<ItemPage> {
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           title: Text('Shopping Cart'),
         ),
@@ -107,7 +108,7 @@ class _ItemPageState extends State<ItemPage> {
                             children: [
                               Text(
                                 'Size: $_size',
-                                style: TextStyle(fontSize: 16.0),
+                                style: Theme.of(context).textTheme.headline1,
                               ),
                               SizedBox(width: 16.0),
                               IconButton(
@@ -134,6 +135,11 @@ class _ItemPageState extends State<ItemPage> {
                           ),
                           SizedBox(height: 16.0),
                           ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
                             onPressed: () {
                               if (_formKey.currentState?.validate() ?? false) {
                                 _formKey.currentState?.save();
@@ -145,7 +151,8 @@ class _ItemPageState extends State<ItemPage> {
                                 _showSnackBar(context);
                               }
                             },
-                            child: Text('Add to Cart'),
+                            child: Text('Add to Cart',
+                            style: Theme.of(context).textTheme.bodyText2,),
                           ),
                         ],
                       ),
@@ -190,8 +197,9 @@ class _ItemPageState extends State<ItemPage> {
         ),
       ),
       duration: Duration(seconds: 2),
-      backgroundColor:
-          Color.fromARGB(255, 38, 119, 184), // Set the background color to blue
+      backgroundColor: Theme.of(context)
+          .colorScheme
+          .primary, // Set the background color to blue
       action: SnackBarAction(
         label: 'Undo',
         textColor: Colors.white,

@@ -12,7 +12,7 @@ class CustomBtmNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      selectedItemColor: Colors.blue,
+      selectedItemColor: Color.fromARGB(255, 138, 101, 88),
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
       currentIndex: currentIndex,

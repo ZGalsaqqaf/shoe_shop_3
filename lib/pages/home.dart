@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       // drawer: TestCustomDrawerWithAppMode(updateAppModeIcon: updateAppModeIcon,),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),

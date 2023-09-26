@@ -37,6 +37,7 @@ class _CartPageState extends State<CartPage> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: ListView.builder(
@@ -47,13 +48,13 @@ class _CartPageState extends State<CartPage> {
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16.0),
-        color: Colors.grey[200],
+        color: Theme.of(context).colorScheme.secondary,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Total: \$${_calculateTotal().toStringAsFixed(2)}',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             ElevatedButton(
               onPressed: () {
@@ -123,26 +124,17 @@ class CartItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     cartItem.name,
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(height: 8.0),
                   Text(
                     '\$${cartItem.price.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.grey[600],
-                    ),
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(height: 8.0),
                   Text(
                     'Quantity: ${cartItem.quantity}',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.grey[600],
-                    ),
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                 ],
               ),

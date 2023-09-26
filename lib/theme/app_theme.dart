@@ -4,31 +4,36 @@ class AppTheme {
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: ColorScheme.light(
-      primary: Colors.blue,
-      secondary: Colors.grey[50]!,
-      background: Colors.grey[500]!,
+      primary: Color.fromARGB(255, 138, 101, 88),
+      secondary: Colors.brown[100]!,
+      background: Colors.brown[50]!,
+      tertiary: Color.fromARGB(255, 138, 101, 88),
+      surface: Color.fromARGB(255, 138, 101, 88),
       // Add other color scheme properties as needed
     ),
     textTheme: TextTheme(
       bodyText1: TextStyle(
-        color: Colors.black,
-      ),
-      bodyText2: TextStyle(
-        color: Colors.blue,
-      ),
-      headline1: TextStyle(
-        color: Colors.black,
+        color: Colors.brown,
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
+      bodyText2: TextStyle(
+        fontSize: 14,
+        color: Colors.brown[100],
+        fontWeight: FontWeight.bold,
+      ),
+      headline1: TextStyle(
+        color: Color.fromARGB(255, 138, 101, 88),
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      ),
       headline2: TextStyle(
-        color: Colors.black,
-        fontSize: 13,
+        color: Color.fromARGB(219, 158, 126, 114),
+        fontSize: 15,
       ),
       headline3: TextStyle(
         color: Colors.black,
         fontSize: 15,
-        fontWeight: FontWeight.bold,
       ),
       headline4: TextStyle(
         color: Colors.black,
@@ -52,9 +57,11 @@ class AppTheme {
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     colorScheme: ColorScheme.dark(
-      primary: Colors.grey[900]!,
+      primary: Colors.black,
       secondary: Colors.grey[700]!,
-      background: Colors.black,
+      background: Color.fromARGB(255, 45, 43, 43),
+      tertiary: Colors.grey[100],
+      surface: Colors.grey[700]!,
       // Add other color scheme properties as needed
     ),
     textTheme: TextTheme(
@@ -63,6 +70,8 @@ class AppTheme {
       ),
       bodyText2: TextStyle(
         color: Colors.grey[300],
+        fontWeight: FontWeight.bold,
+
       ),
       headline1: TextStyle(
         color: Colors.grey[300],
@@ -70,13 +79,12 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
       headline2: TextStyle(
-        color: Colors.grey[300],
+        color: Colors.grey[400],
         fontSize: 13,
       ),
       headline3: TextStyle(
         color: Colors.grey[300],
         fontSize: 15,
-        fontWeight: FontWeight.bold,
       ),
       headline4: TextStyle(
         color: Colors.black,

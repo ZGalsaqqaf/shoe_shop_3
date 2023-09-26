@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    decoration: CustomInputDecoration(label: "Email"),
+                    decoration: CustomInputDecoration(context, "Email"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -56,18 +57,18 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      labelStyle:  Theme.of(context).textTheme.bodyText2,
+                      // labelStyle:  Theme.of(context).textTheme.bodyText2,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
+                          color: Theme.of(context).colorScheme.tertiary,
                           width: 2,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
                         borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.background,
+                          color: Theme.of(context).colorScheme.tertiary,
                         ),
                       ),
                       suffixIcon: GestureDetector(
@@ -112,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text(
                       'Submit',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                   SizedBox(height: 16.0),

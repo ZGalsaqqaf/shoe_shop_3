@@ -39,6 +39,7 @@ class _FavoritePageState extends State<FavoritePage> {
       });
     }
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
         appBar: SearchAppBar(context),
         drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
         body: ListView.builder(

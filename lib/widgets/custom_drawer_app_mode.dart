@@ -38,7 +38,10 @@ Widget CustomDrawerWithAppMode(
           ),
         ),
         ListTile(
-          leading: Icon(Icons.home),
+          leading: Icon(
+            Icons.home,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
           title: Text('Home'),
           onTap: () {
             // Handle Home navigation
@@ -52,12 +55,16 @@ Widget CustomDrawerWithAppMode(
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              color: Theme.of(context).colorScheme.tertiary,
             ),
           ),
         ),
         ListTile(
-          leading: Icon(Icons.subdirectory_arrow_right),
-          title: Text('Sneakers'),
+          leading: Icon(Icons.subdirectory_arrow_right,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text('Sneakers',
+          style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -67,8 +74,11 @@ Widget CustomDrawerWithAppMode(
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.favorite),
-          title: Text('My Favorite'),
+          leading: Icon(Icons.favorite,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text('My Favorite',
+          style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -78,8 +88,11 @@ Widget CustomDrawerWithAppMode(
         ),
         Divider(),
         ListTile(
-          leading: Icon(appModeIcon),
-          title: Text("Dark Mode"),
+          leading: Icon(appModeIcon,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text("Dark Mode",
+          style: Theme.of(context).textTheme.headline3,),
           trailing: Switch(
             value: appModeIcon == Icons.dark_mode,
             onChanged: (newValue) {
@@ -100,8 +113,11 @@ Widget CustomDrawerWithAppMode(
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.login),
-          title: Text('Login'),
+          leading: Icon(Icons.login,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text('Login',
+          style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -111,8 +127,11 @@ Widget CustomDrawerWithAppMode(
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.info),
-          title: Text('About Us'),
+          leading: Icon(Icons.info,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text('About Us',
+          style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -122,8 +141,11 @@ Widget CustomDrawerWithAppMode(
         ),
         Divider(),
         ListTile(
-          leading: Icon(Icons.subdirectory_arrow_right),
-          title: Text('Tests'),
+          leading: Icon(Icons.subdirectory_arrow_right,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+          title: Text('Tests',
+          style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {

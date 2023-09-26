@@ -6,6 +6,7 @@ import '../pages/login.dart';
 AppBar SearchAppBar(BuildContext context) {
   return AppBar(
     centerTitle: true,
+    backgroundColor: Theme.of(context).colorScheme.primary,
     title: Container(
       height: 40.0,
       width: 300.0,
