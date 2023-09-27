@@ -39,6 +39,9 @@ dependencies:
   carousel_slider: ^4.2.1
   provider: ^6.0.5
   flutter_native_splash: ^2.2.18
+  sqflite: ^2.2.8+4
+  path: ^1.8.2
+  path_provider: ^2.1.0
 
 flutter_native_splash:
   image: assets/images/shop/5shoeshop.png
