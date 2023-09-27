@@ -65,7 +65,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.009,
+          height: MediaQuery.of(context).size.height * 0.0001,
         ),
         Container(
           padding: EdgeInsets.symmetric(
@@ -78,7 +78,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
                 style: Theme.of(context).textTheme.headline1,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.009,
+                height: MediaQuery.of(context).size.height * 0.0001,
               ),
               Text(
                 itemDetails,
@@ -86,7 +86,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
                 style: Theme.of(context).textTheme.headline2,
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
+                height: MediaQuery.of(context).size.height * 0.008,
               ),
               Container(
                 margin: EdgeInsets.symmetric(
