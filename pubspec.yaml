@@ -46,7 +46,7 @@ dependencies:
 flutter_native_splash:
   image: assets/images/shop/5shoeshop.png
   color: "#bfa8a1"
-  fill: true
+  # fill: true
   android: true
   ios: true
 
