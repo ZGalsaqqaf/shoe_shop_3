@@ -9,3 +9,5 @@ flutter pub add path
 flutter pub add path_provider
 
 flutter pub add image_picker
+
+flutter pub add dio

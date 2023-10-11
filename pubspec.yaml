@@ -43,6 +43,7 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.1.0
   image_picker: ^1.0.2
+  dio: ^5.3.3
 
 flutter_native_splash:
   image: assets/images/shop/5shoeshop.png
