@@ -46,38 +46,37 @@ class _BaseCategoriesPageState extends State<BaseCategoriesPage> {
                     : ListView.separated(
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => CategoryGetByField(
-                                          field: "Audience",
-                                          value: '${items[index].name}',
-                                        )));
+                                  builder: (context) => CategoryGetByField(
+                                        field: "Audience",
+                                        value: '${items[index].name}',
+                                      )));
                             },
                             child: Stack(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 8.0),
+                                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                                   decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        items[index].image ?? '',
-                                      ),
+                                          items[index].image ?? ''),
                                       fit: BoxFit.cover,
                                       colorFilter: ColorFilter.mode(
-                                        Colors.white.withOpacity(
-                                            0.2), // Adjust background image opacity (0.0 to 1.0)
-                                        BlendMode.srcOver,
+                                        Colors.black.withOpacity(
+                                            0.4), // Adjust background image opacity (0.0 to 1.0)
+                                        BlendMode
+                                            .darken, // Apply a dark overlay
                                       ),
                                     ),
-                                    color: Colors.lightBlue,
-                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0, vertical: 30),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         // Icon(
                                         //   baseCategory.icon,

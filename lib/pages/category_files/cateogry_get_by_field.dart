@@ -79,31 +79,29 @@ class _CategoryGetByFieldState extends State<CategoryGetByField> {
                           image: NetworkImage(categories[index].image ?? ''),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
-                            Colors.white.withOpacity(0.2),
-                            BlendMode.srcOver,
+                            Colors.black.withOpacity(
+                                0.4), // Adjust background image opacity (0.0 to 1.0)
+                            BlendMode.darken, // Apply a dark overlay
                           ),
                         ),
                       ),
-                      child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 2.0, vertical: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.2), // Set the background color with opacity
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 5.0,
-                                vertical: 3.0,
-                              ),
-                              child: Text(
-                                '${categories[index].name}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            // Icon(
+                            //   baseCategory.icon,
+                            //   size: 32,
+                            //   color: Colors.white,
+                            // ),
+                            Text(
+                              '${categories[index].name}',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
