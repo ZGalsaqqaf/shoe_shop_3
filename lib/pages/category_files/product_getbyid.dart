@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shoe_shop_3/pages/category_files/product_images.dart';
 import 'package:shoe_shop_3/reops/product_repo.dart';
 import 'package:shoe_shop_3/widgets/item_slider.dart';
 
@@ -66,7 +67,10 @@ class _ProductGetByIdState extends State<ProductGetById> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          ItemSlider(context, allImages),
+                          ProductImagesAll(
+                            value: widget.itemId,
+                            productImage: prodImage ?? '',
+                          ),
                           SizedBox(height: 10.0),
                           Text(
                             '$prodName for ${audience.name}',

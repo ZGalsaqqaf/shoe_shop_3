@@ -49,21 +49,21 @@ Widget CustomDrawerWithAppMode(
           },
         ),
         Divider(),
+        // ListTile(
+        //   title: Text(
+        //     'Categories',
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.bold,
+        //       fontSize: 16,
+        //       color: Theme.of(context).colorScheme.tertiary,
+        //     ),
+        //   ),
+        // ),
         ListTile(
-          title: Text(
-            'Categories',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.tertiary,
-            ),
-          ),
-        ),
-        ListTile(
-          leading: Icon(Icons.subdirectory_arrow_right,
+          leading: Icon(Icons.shopping_cart,
             color: Theme.of(context).colorScheme.tertiary,
           ),
-          title: Text('Sneakers',
+          title: Text('My Cart',
           style: Theme.of(context).textTheme.headline3,),
           onTap: () {
             // Handle Home navigation
@@ -73,20 +73,20 @@ Widget CustomDrawerWithAppMode(
           },
         ),
         Divider(),
-        ListTile(
-          leading: Icon(Icons.favorite,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-          title: Text('My Favorite',
-          style: Theme.of(context).textTheme.headline3,),
-          onTap: () {
-            // Handle Home navigation
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return FavoritePage();
-            }));
-          },
-        ),
-        Divider(),
+        // ListTile(
+        //   leading: Icon(Icons.favorite,
+        //     color: Theme.of(context).colorScheme.tertiary,
+        //   ),
+        //   title: Text('My Favorite',
+        //   style: Theme.of(context).textTheme.headline3,),
+        //   onTap: () {
+        //     // Handle Home navigation
+        //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        //       return FavoritePage();
+        //     }));
+        //   },
+        // ),
+        // Divider(),
         ListTile(
           leading: Icon(appModeIcon,
             color: Theme.of(context).colorScheme.tertiary,

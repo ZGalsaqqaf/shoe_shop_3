@@ -97,44 +97,44 @@ class ProductShoeRepository {
     }
   } // end getByField
 
-  Future<List<ProductShoeModel>> getByField2(
-      String field, String value, String fieldName1,
-      {String value2 = "", String fieldName2 = ""}) async {
-    try {
-      final response = await dio.get(
-        apiLink,
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'x-apikey': apiKey,
-          },
-        ),
-      );
+  // Future<List<ProductShoeModel>> getByField2(
+  //     String field, String value, String fieldName1,
+  //     {String value2 = "", String fieldName2 = ""}) async {
+  //   try {
+  //     final response = await dio.get(
+  //       apiLink,
+  //       options: Options(
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'x-apikey': apiKey,
+  //         },
+  //       ),
+  //     );
 
-      if (response.statusCode == 200) {
-        final data = response.data as List<dynamic>;
-        final products = <ProductShoeModel>[];
-        for (var productData in data) {
-          final product = ProductShoeModel.fromJson(productData);
+  //     if (response.statusCode == 200) {
+  //       final data = response.data as List<dynamic>;
+  //       final products = <ProductShoeModel>[];
+  //       for (var productData in data) {
+  //         final product = ProductShoeModel.fromJson(productData);
 
-          // Check if the product's category name matches the provided value
-          if (product.cateId != null && product.cateId!.isNotEmpty) {
-            for (var category in product.cateId!) {
-              if (category[fieldName1] == value) {
-                products.add(product);
-                break;
-              }
-            }
-          }
-        }
-        return products;
-      } else {
-        throw Exception('Failed to fetch products by field');
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //         // Check if the product's category name matches the provided value
+  //         if (product.cateId != null && product.cateId!.isNotEmpty) {
+  //           for (var category in product.cateId!) {
+  //             if (category[fieldName1] == value) {
+  //               products.add(product);
+  //               break;
+  //             }
+  //           }
+  //         }
+  //       }
+  //       return products;
+  //     } else {
+  //       throw Exception('Failed to fetch products by field');
+  //     }
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<ProductShoeModel>> getByCateNameAndAudienceName(
       String value1, String value2) async {
