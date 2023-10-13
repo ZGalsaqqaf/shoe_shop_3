@@ -1,8 +1,8 @@
+// Get Categories of Each Audience ==> Sneakers, Heels, Boots, ....
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shoe_shop_3/models/category_model.dart';
-import 'package:shoe_shop_3/myclasses/category_class.dart';
+import 'package:shoe_shop_3/pages/category_files/products_audience.dart';
 import 'package:shoe_shop_3/reops/category_repo.dart';
 
 import '../../widgets/custom_drawer_app_mode.dart';
@@ -67,7 +67,10 @@ class _CategoryGetByFieldState extends State<CategoryGetByField> {
                   return GestureDetector(
                     onTap: () {
                       // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                      //   return CategoryPage();
+                      //   return ProductAudience(
+                      //     value1: '${categories[index].name}',
+                      //     value2: '${categories[index].audience}',
+                      //   );
                       // }));
                       print(
                           '===========image : ${categories[index].image ?? ''}');

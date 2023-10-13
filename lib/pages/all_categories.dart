@@ -1,120 +1,146 @@
-// // dont used
-// //////////////// XXXXXXXXXX  ///////////
-// //////////////// XXXXXXXXXX  ///////////
-// //////////////// XXXXXXXXXX  ///////////
-// //////////////// XXXXXXXXXX  ///////////
+// Get Categories of Each Audience ==> Sneakers, Heels, Boots, ....
 
-// import 'package:flutter/material.dart';
-// import 'package:shoe_shop_3/widgets/custom_drawer_app_mode.dart';
-// import 'package:shoe_shop_3/widgets/search_appbar.dart';
+import 'package:flutter/material.dart';
+import 'package:shoe_shop_3/models/category_model.dart';
+import 'package:shoe_shop_3/pages/category_files/products_audience.dart';
+import 'package:shoe_shop_3/reops/category_repo.dart';
 
-// import '../myclasses/all_categories_classes_and_lists.dart';
-// import 'category.dart';
+import '../../widgets/custom_drawer_app_mode.dart';
+import '../../widgets/search_appbar.dart';
 
-// class AllCategoriesPage extends StatefulWidget {
-//   const AllCategoriesPage({super.key, required this.shoeType});
-//   final String shoeType;
-//   @override
-//   State<AllCategoriesPage> createState() => _AllCategoriesPageState();
-// }
+class AllCategoriesPage extends StatefulWidget {
+  const AllCategoriesPage(
+      {super.key, required this.field, required this.value});
+  final String field;
+  final String value;
 
-// class _AllCategoriesPageState extends State<AllCategoriesPage> {
-//   IconData appModeIcon = Icons.sunny;
+  @override
+  State<AllCategoriesPage> createState() => _AllCategoriesPageState();
+}
 
-//   void updateAppModeIcon(IconData newIcon) {
-//     setState(() {
-//       appModeIcon = newIcon;
-//     });
-//   }
-//   List<AllCategoriesClass> getThisCategoryList() {
-//     if (widget.shoeType.toLowerCase() == "men") {
-//       return menCategoriesList;
-//     } else if (widget.shoeType.toLowerCase() == "women") {
-//       return womenCategoriesList;
-//     } else if (widget.shoeType.toLowerCase() == "boys") {
-//       return boyCategoriesList;
-//     } else if (widget.shoeType.toLowerCase() == "girls") {
-//       return girlCategoriesList;
-//     } else {
-//       return babyCategoriesList;
-//     }
-//   }
+class _AllCategoriesPageState extends State<AllCategoriesPage> {
+  IconData appModeIcon = Icons.sunny;
 
-  
-//   @override
-//   Widget build(BuildContext context) {
-//     List<AllCategoriesClass> thisCategory = getThisCategoryList();
+  void updateAppModeIcon(IconData newIcon) {
+    setState(() {
+      appModeIcon = newIcon;
+    });
+  }
 
-//     return Scaffold(
-//       backgroundColor: Theme.of(context).colorScheme.background,
-//       appBar: SearchAppBar(context),
-//       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
-//       body: Container(
-//         child: GridView.builder(
-//           padding: EdgeInsets.all(16.0),
-//           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//             crossAxisCount: 2,
-//             crossAxisSpacing: 16.0,
-//             mainAxisSpacing: 16.0,
-//             childAspectRatio: 0.8, // Adjust the aspect ratio for balanced grids
-//           ),
-//           itemCount: thisCategory.length,
-//           itemBuilder: (BuildContext context, index) {
-//             return BaseCategoriesWidget(
-//               baseCategory: thisCategory[index],
-//             );
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
+  Future<List<CategoryModel>>? _categoryData;
 
-// class BaseCategoriesWidget extends StatelessWidget {
-//   const BaseCategoriesWidget({super.key, required this.baseCategory});
-//   final AllCategoriesClass baseCategory;
+  @override
+  void initState() {
+    super.initState();
+    _categoryData = _fetchcategoryData();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 100, // Set the desired width
-//       height: 100, // Set the desired height
-//       child: GestureDetector(
-//         onTap: () {
-//           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-//             return CategoryPage();
-//           }));
-//         },
-//         child: Stack(
-//           children: [
-//             Container(
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(8.0),
-//                 image: DecorationImage(
-//                   image: AssetImage(
-//                       baseCategory.image), // Set the background image
-//                   fit: BoxFit.cover,
-//                   colorFilter: ColorFilter.mode(
-//                     Colors.black.withOpacity(
-//                         0.4), // Adjust background image opacity (0.0 to 1.0)
-//                     BlendMode.srcOver,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             Center(
-//               child: Text(
-//                 baseCategory.name,
-//                 style: TextStyle(
-//                   fontSize: 20,
-//                   color: Colors.white,
-//                   fontWeight: FontWeight.bold,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  Future<List<CategoryModel>> _fetchcategoryData() async {
+    final repository = CategoryRepository();
+    return repository.getByField(widget.field, widget.value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: SearchAppBar(context),
+      drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
+      body: FutureBuilder<List<CategoryModel>>(
+        future: _categoryData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final categories = snapshot.data;
+            if (categories == null || categories.isEmpty) {
+              return Text(
+                'No category data found.',
+                style: Theme.of(context).textTheme.bodyText1,
+              );
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {});
+                },
+                child: categories.isEmpty
+                    ? Center(child: Text("No Data"))
+                    : ListView.separated(
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return ProductAudience(
+                                  value1: '${categories[index].name}',
+                                  value2: '${categories[index].audience}',
+                                );
+                              }));
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          categories[index].image ?? ''),
+                                      fit: BoxFit.cover,
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.black.withOpacity(
+                                            0.4), // Adjust background image opacity (0.0 to 1.0)
+                                        BlendMode
+                                            .darken, // Apply a dark overlay
+                                      ),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Icon(
+                                        //   baseCategory.icon,
+                                        //   size: 32,
+                                        //   color: Colors.white,
+                                        // ),
+                                        SizedBox(width: 16.0),
+                                        Text(
+                                          '${categories[index].name}',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return Divider();
+                        },
+                        itemCount: categories.length,
+                      ),
+              );
+            } else {
+              return Center(
+                child: Text("Error: ${snapshot.error.toString()}"),
+              );
+            }
+          }
+        },
+      ),
+    );
+  }
+}

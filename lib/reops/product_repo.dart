@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:shoe_shop_3/models/product_model.dart';
 
-import '../models/product_model.dart';
 
 class ProductShoeRepository {
   late Dio dio;

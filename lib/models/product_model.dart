@@ -1,11 +1,11 @@
-/// _id : "65236f3ebd6e396200012d6d"
-/// Cate_id : [{"_id":"65236b88bd6e396200012d19","Name":"Sneakers","_created":"2023-10-09T02:55:04.112Z","_changed":"2023-10-12T03:05:45.809Z","Idx":6,"Audience":"Women","Image":"https://i.pinimg.com/736x/13/3d/93/133d93c076b30997d28f1d462cf47da5.jpg"}]
-/// Audi_id : [{"_id":"65236affbd6e396200012d05","Name":"Men","_created":"2023-10-09T02:52:47.410Z","_changed":"2023-10-10T02:09:24.590Z","Image":"https://i.pinimg.com/564x/14/82/0f/14820f9de34e6860c634e59c556e1d73.jpg","Idx":1}]
-/// Details : "Comfortable men's sneakers"
-/// Date : "2023-10-09T03:10:15.000Z"
-/// Price : 20
-/// Idx : 16
-/// Image : "https://i.pinimg.com/564x/48/69/00/486900fd48f60c3cdc949953cee2dcfb.jpg"
+/// _id : "6528b1d33c0fd4270000998b"
+/// Cate_id : [{"_id":"6526bba13c0fd427000053c2","Name":"Dress","Idx":7,"Audience":"Boys","_created":"2023-10-11T15:13:37.152Z","_changed":"2023-10-12T03:11:19.194Z","Image":"https://i.pinimg.com/736x/dc/d8/09/dcd809acb226e257ce0de18bc9fbb33b.jpg"}]
+/// Audi_id : [{"_id":"65236b2fbd6e396200012d0b","Name":"Boys","_created":"2023-10-09T02:53:35.859Z","_changed":"2023-10-10T02:13:31.186Z","Image":"https://i.pinimg.com/564x/39/7a/e3/397ae3474203de8476cbeb748522db3c.jpg","Idx":3}]
+/// Details : "Comfortable boy's dress shoes"
+/// Date : "2023-10-13T02:55:21.000Z"
+/// Price : 30.99
+/// Image : "https://i.pinimg.com/564x/6e/75/25/6e7525f9b1f399839ce5763461b54bcf.jpg"
+/// Idx : 12
 
 class ProductShoeModel {
   ProductShoeModel({
@@ -15,8 +15,8 @@ class ProductShoeModel {
       this.details, 
       this.date, 
       this.price, 
-      this.idx, 
-      this.image,});
+      this.image, 
+      this.idx,});
 
   ProductShoeModel.fromJson(dynamic json) {
     id = json['_id'];
@@ -35,33 +35,33 @@ class ProductShoeModel {
     details = json['Details'];
     date = json['Date'];
     price = json['Price'];
-    idx = json['Idx'];
     image = json['Image'];
+    idx = json['Idx'];
   }
   String? id;
   List<CateId>? cateId;
   List<AudiId>? audiId;
   String? details;
   String? date;
-  int? price;
-  int? idx;
+  double? price;
   String? image;
+  int? idx;
 ProductShoeModel copyWith({  String? id,
   List<CateId>? cateId,
   List<AudiId>? audiId,
   String? details,
   String? date,
-  int? price,
-  int? idx,
+  double? price,
   String? image,
+  int? idx,
 }) => ProductShoeModel(  id: id ?? this.id,
   cateId: cateId ?? this.cateId,
   audiId: audiId ?? this.audiId,
   details: details ?? this.details,
   date: date ?? this.date,
   price: price ?? this.price,
-  idx: idx ?? this.idx,
   image: image ?? this.image,
+  idx: idx ?? this.idx,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -75,19 +75,19 @@ ProductShoeModel copyWith({  String? id,
     map['Details'] = details;
     map['Date'] = date;
     map['Price'] = price;
-    map['Idx'] = idx;
     map['Image'] = image;
+    map['Idx'] = idx;
     return map;
   }
 
 }
 
-/// _id : "65236affbd6e396200012d05"
-/// Name : "Men"
-/// _created : "2023-10-09T02:52:47.410Z"
-/// _changed : "2023-10-10T02:09:24.590Z"
-/// Image : "https://i.pinimg.com/564x/14/82/0f/14820f9de34e6860c634e59c556e1d73.jpg"
-/// Idx : 1
+/// _id : "65236b2fbd6e396200012d0b"
+/// Name : "Boys"
+/// _created : "2023-10-09T02:53:35.859Z"
+/// _changed : "2023-10-10T02:13:31.186Z"
+/// Image : "https://i.pinimg.com/564x/39/7a/e3/397ae3474203de8476cbeb748522db3c.jpg"
+/// Idx : 3
 
 class AudiId {
   AudiId({
@@ -97,7 +97,7 @@ class AudiId {
       this.changed, 
       this.image, 
       this.idx,});
-  
+
   dynamic operator [](String key) {
     switch (key) {
       case '_id':
@@ -155,22 +155,22 @@ AudiId copyWith({  String? id,
 
 }
 
-/// _id : "65236b88bd6e396200012d19"
-/// Name : "Sneakers"
-/// _created : "2023-10-09T02:55:04.112Z"
-/// _changed : "2023-10-12T03:05:45.809Z"
-/// Idx : 6
-/// Audience : "Women"
-/// Image : "https://i.pinimg.com/736x/13/3d/93/133d93c076b30997d28f1d462cf47da5.jpg"
+/// _id : "6526bba13c0fd427000053c2"
+/// Name : "Dress"
+/// Idx : 7
+/// Audience : "Boys"
+/// _created : "2023-10-11T15:13:37.152Z"
+/// _changed : "2023-10-12T03:11:19.194Z"
+/// Image : "https://i.pinimg.com/736x/dc/d8/09/dcd809acb226e257ce0de18bc9fbb33b.jpg"
 
 class CateId {
   CateId({
       this.id, 
       this.name, 
-      this.created, 
-      this.changed, 
       this.idx, 
       this.audience, 
+      this.created, 
+      this.changed, 
       this.image,});
   
   dynamic operator [](String key) {
@@ -197,42 +197,42 @@ class CateId {
   CateId.fromJson(dynamic json) {
     id = json['_id'];
     name = json['Name'];
-    created = json['_created'];
-    changed = json['_changed'];
     idx = json['Idx'];
     audience = json['Audience'];
+    created = json['_created'];
+    changed = json['_changed'];
     image = json['Image'];
   }
   String? id;
   String? name;
-  String? created;
-  String? changed;
   int? idx;
   String? audience;
+  String? created;
+  String? changed;
   String? image;
 CateId copyWith({  String? id,
   String? name,
-  String? created,
-  String? changed,
   int? idx,
   String? audience,
+  String? created,
+  String? changed,
   String? image,
 }) => CateId(  id: id ?? this.id,
   name: name ?? this.name,
-  created: created ?? this.created,
-  changed: changed ?? this.changed,
   idx: idx ?? this.idx,
   audience: audience ?? this.audience,
+  created: created ?? this.created,
+  changed: changed ?? this.changed,
   image: image ?? this.image,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['_id'] = id;
     map['Name'] = name;
-    map['_created'] = created;
-    map['_changed'] = changed;
     map['Idx'] = idx;
     map['Audience'] = audience;
+    map['_created'] = created;
+    map['_changed'] = changed;
     map['Image'] = image;
     return map;
   }

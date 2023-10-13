@@ -1,4 +1,7 @@
+// Get Audiences ==> Men, Women, Boys, Girls, Baybies,
+
 import 'package:flutter/material.dart';
+import 'package:shoe_shop_3/pages/all_categories.dart';
 import 'package:shoe_shop_3/pages/category_files/cateogry_get_by_field.dart';
 
 import '../models/audience_model.dart';
@@ -48,7 +51,7 @@ class _BaseCategoriesPageState extends State<BaseCategoriesPage> {
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => CategoryGetByField(
+                                  builder: (context) => AllCategoriesPage(
                                         field: "Audience",
                                         value: '${items[index].name}',
                                       )));
@@ -56,7 +59,8 @@ class _BaseCategoriesPageState extends State<BaseCategoriesPage> {
                             child: Stack(
                               children: [
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: DecorationImage(
