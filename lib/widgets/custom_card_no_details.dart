@@ -3,11 +3,9 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget CustomCardNoDetails(BuildContext context) {
-  String itemImage = "assets/images/women/sneakers/wsk5.webp";
-  String itemName = "Sneakers";
-  String itemDetails = "xxxx xxxxxxxx xxxx";
-  double itemPrice = 10;
+Widget CustomCardNoDetails(BuildContext context, String category, String image) {
+  // String itemImage = "assets/images/women/sneakers/wsk5.webp";
+  // String itemName = "Sneakers";
 
   return Container(
     margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
@@ -36,8 +34,8 @@ Widget CustomCardNoDetails(BuildContext context) {
               ClipRRect(
                 borderRadius:
                     BorderRadius.circular(15.0), // Set the border radius
-                child: Image.asset(
-                  itemImage,
+                child: Image.network(
+                  image,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.15,
@@ -57,7 +55,7 @@ Widget CustomCardNoDetails(BuildContext context) {
                     ),
                   ),
                   child: Text(
-                    "$itemName",
+                    category,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

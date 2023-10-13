@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shoe_shop_3/models/category_model.dart';
+import 'package:shoe_shop_3/reops/category_repo.dart';
 import 'package:shoe_shop_3/widgets/custom_card_no_details.dart';
 import 'package:shoe_shop_3/widgets/custom_card_with_discount.dart';
-import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
 import 'package:shoe_shop_3/widgets/custom_home_slider.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
+import '../models/product_model.dart';
+import '../reops/product_repo.dart';
 import '../widgets/custom_drawer_app_mode.dart';
 import 'fake_pages.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,8 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   IconData favoriteIcon = Icons.favorite_outline;
-
-  // عدد العناصر التي ستظهر
   int _itemCount = 15;
   ScrollController _scrollController = ScrollController();
 
@@ -46,7 +47,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
-      // drawer: TestCustomDrawerWithAppMode(updateAppModeIcon: updateAppModeIcon,),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: SingleChildScrollView(
         child: Column(
@@ -62,19 +62,43 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height *
-                    0.163, // Specify the height of the horizontal list
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 7,
-                  itemBuilder: (context, index) {
-                    return CustomCardNoDetails(context);
-                  },
-                ),
+              child: FutureBuilder<List<CategoryModel>>(
+                future: CategoryRepository().getAll(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text("Error: ${snapshot.error.toString()}"));
+                    }
+
+                    var items = snapshot.data ?? [];
+                    return Container(
+                      height: 105.0, // Add a fixed height to the container
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {});
+                        },
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            var category = items[index];
+                            return CustomCardNoDetails(context, category.name??'', category.image??'');
+                            },
+                          itemCount: items.length,
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text("Error: ${snapshot.error.toString()}"),
+                    );
+                  }
+                },
               ),
             ),
+
             SizedBox(
               child: Divider(),
             ),
@@ -104,15 +128,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
-      // ListView.builder(
-      //   itemCount: _itemCount,
-
-      //   controller: _scrollController,
-      //   },
-
-      //   itemBuilder: itemBuilder,
-      // ),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shoe_shop_3/models/product_model.dart';
 
-
 class ProductShoeRepository {
   late Dio dio;
   String apiLink = 'https://shoes-0c15.restdb.io/rest/product';
@@ -181,6 +180,95 @@ class ProductShoeRepository {
             }
             if (!audienceMatched) {
               continue; // Skip to the next product if the audience didn't match
+            }
+          }
+
+          products.add(product);
+        }
+
+        return products;
+      } else {
+        throw Exception('Failed to fetch products by field');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<ProductShoeModel>> getByCateNameAndAudienceName2(
+      String value1, String value2) async {
+    try {
+      final response = await dio.get(
+        apiLink,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data as List<dynamic>;
+        final products = <ProductShoeModel>[];
+
+        for (var productData in data) {
+          final product = ProductShoeModel.fromJson(productData);
+
+          // Check if the product's category name matches the provided value1
+          if (value1 == '0' || value1.isEmpty || value1 == null) {
+            // Check if the product's audience name matches the provided value2
+            if (product.audiId != null && product.audiId!.isNotEmpty) {
+              bool audienceMatched = false;
+              for (var audienceId in product.audiId!) {
+                if (audienceId['Name'] == value2) {
+                  audienceMatched = true;
+                  break;
+                }
+              }
+              if (!audienceMatched) {
+                continue; // Skip to the next product if the audience didn't match
+              }
+            }
+          } else if (value2 == '0' || value2.isEmpty || value2 == null) {
+            if (product.cateId != null && product.cateId!.isNotEmpty) {
+              bool categoryMatched = false;
+              for (var categoryId in product.cateId!) {
+                if (categoryId['Name'] == value1) {
+                  categoryMatched = true;
+                  break;
+                }
+              }
+              if (!categoryMatched) {
+                continue; // Skip to the next product if the category didn't match
+              }
+            }
+          } else {
+            if (product.cateId != null && product.cateId!.isNotEmpty) {
+              bool categoryMatched = false;
+              for (var categoryId in product.cateId!) {
+                if (categoryId['Name'] == value1) {
+                  categoryMatched = true;
+                  break;
+                }
+              }
+              if (!categoryMatched) {
+                continue; // Skip to the next product if the category didn't match
+              }
+            }
+
+            // Check if the product's audience name matches the provided value2
+            if (product.audiId != null && product.audiId!.isNotEmpty) {
+              bool audienceMatched = false;
+              for (var audienceId in product.audiId!) {
+                if (audienceId['Name'] == value2) {
+                  audienceMatched = true;
+                  break;
+                }
+              }
+              if (!audienceMatched) {
+                continue; // Skip to the next product if the audience didn't match
+              }
             }
           }
 
