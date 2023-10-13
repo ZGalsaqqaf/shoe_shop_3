@@ -38,7 +38,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
   Future<List<ProductShoeModel>> _fetchcategoryData() async {
     final repository = ProductShoeRepository();
-    return repository.getByCateNameAndAudienceName(
+    return repository.getByCateNameAndAudienceName2(
         widget.value1, widget.value2);
   }
 

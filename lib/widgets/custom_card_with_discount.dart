@@ -3,17 +3,17 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
-  String itemImage = "assets/images/women/sneakers/wsk5.webp";
-  String itemName = "Sneakers";
-  String itemDetails = "xxxx xxxxxxxx xxxx";
-  double itemPrice = 10;
+Widget CustomCardWithDiscount(BuildContext context, bool showDisCount, String productName, String details, double price, String img) {
+  // String itemImage = "assets/images/women/sneakers/wsk5.webp";
+  // String itemName = "Sneakers";
+  // String itemDetails = "xxxx xxxxxxxx xxxx";
+  // double itemPrice = 10;
   // bool showDiscount = true;
 
   return Container(
     margin: EdgeInsets.all(5),
     width: MediaQuery.of(context).size.width * 0.3,
-    height: MediaQuery.of(context).size.height * 0.29,
+    height: MediaQuery.of(context).size.height * 0.30,
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.secondary,
       borderRadius: BorderRadius.circular(15),
@@ -33,8 +33,8 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
           width: MediaQuery.of(context).size.height * 0.3,
           child: Stack(
             children: [
-              Image.asset(
-                itemImage,
+              Image.network(
+                img,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.15,
@@ -73,7 +73,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
           child: Column(
             children: [
               Text(
-                itemName,
+                productName,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline1,
               ),
@@ -81,7 +81,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
                 height: MediaQuery.of(context).size.height * 0.0001,
               ),
               Text(
-                itemDetails,
+                details,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headline2,
               ),
@@ -95,7 +95,7 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount) {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "\$$itemPrice",
+                      "\$${price.toString()}",
                       style: Theme.of(context).textTheme.headline3,
                     ),
                     Icon(

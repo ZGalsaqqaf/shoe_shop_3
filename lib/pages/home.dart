@@ -84,8 +84,11 @@ class _HomePageState extends State<HomePage> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             var category = items[index];
-                            return CustomCardNoDetails(context, category.name??'', category.image??'');
-                            },
+                            return GestureDetector(
+                                onTap: () {},
+                                child: CustomCardNoDetails(context,
+                                    category.name ?? '', category.image ?? ''));
+                          },
                           itemCount: items.length,
                         ),
                       ),
@@ -98,32 +101,50 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
-
             SizedBox(
               child: Divider(),
             ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 1.0,
-                crossAxisSpacing: 1.0,
-                childAspectRatio: 0.6,
-              ),
-              itemCount: _itemCount,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return ItemPage();
-                      }),
+            Container(
+              child: FutureBuilder<List<ProductShoeModel>>(
+                future: ProductShoeRepository().getAll(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text("Error: ${snapshot.error.toString()}"));
+                    }
+
+                    var items = snapshot.data ?? [];
+                    return Container(
+                      height: 200.0, // Add a fixed height to the container
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {});
+                        },
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            var product = items[index];
+                            var cate = product.cateId![0];
+                            return GestureDetector(
+                                onTap: () {
+                                  print(items.length);
+                                },
+                                child: CustomCardWithDiscount(context, true, cate.name??'', product.details??'', product.price??0.0, product.image??''));
+                          },
+                          itemCount: items.length,
+                        ),
+                      ),
                     );
-                  },
-                  child: CustomCardWithDiscount(context, true),
-                );
-              },
+                  } else {
+                    return Center(
+                      child: Text("Error: ${snapshot.error.toString()}"),
+                    );
+                  }
+                },
+              ),
             ),
           ],
         ),
