@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/widgets/custom_card_no_details.dart';
 import 'package:shoe_shop_3/widgets/custom_card_with_discount.dart';
 import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
+import 'package:shoe_shop_3/widgets/custom_home_slider.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
 import '../widgets/custom_drawer_app_mode.dart';
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               margin: EdgeInsets.symmetric(vertical: 16.0),
-              child: CustomSlider(context),
+              child: CustomHomeSlider(),
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.4,
