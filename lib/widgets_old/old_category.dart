@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
+import '../pages/fake_pages.dart';
 import '../widgets/custom_card2.dart';
 import '../widgets/custom_drawer_app_mode.dart';
 

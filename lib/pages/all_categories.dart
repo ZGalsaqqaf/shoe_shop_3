@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/models/category_model.dart';
 import 'package:shoe_shop_3/pages/category_files/products_audience.dart';
+import 'package:shoe_shop_3/pages/products.dart';
 import 'package:shoe_shop_3/reops/category_repo.dart';
 
 import '../../widgets/custom_drawer_app_mode.dart';
@@ -73,7 +74,7 @@ class _AllCategoriesPageState extends State<AllCategoriesPage> {
                             onTap: () {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (context) {
-                                return ProductAudience(
+                                return ProductsPage(
                                   value1: '${categories[index].name}',
                                   value2: '${categories[index].audience}',
                                 );

@@ -4,6 +4,7 @@ import 'package:shoe_shop_3/my_tests/tests.dart';
 import 'package:shoe_shop_3/myclasses/category_class.dart';
 import 'package:shoe_shop_3/pages/about.dart';
 import 'package:shoe_shop_3/pages/account.dart';
+import 'package:shoe_shop_3/pages/cart.dart';
 import 'package:shoe_shop_3/pages/category.dart';
 import 'package:shoe_shop_3/pages/favorites.dart';
 import 'package:shoe_shop_3/pages/login.dart';
@@ -68,7 +69,7 @@ Widget CustomDrawerWithAppMode(
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return CategoryPage();
+              return CartPage();
             }));
           },
         ),

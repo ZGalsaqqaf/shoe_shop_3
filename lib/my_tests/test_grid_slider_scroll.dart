@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
 import 'package:shoe_shop_3/widgets_old/custom_drawer.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
+import '../pages/fake_pages.dart';
 import '../widgets/custom_card2.dart';
 
 class TestsPage extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
 import '../widgets/custom_card2.dart';
 import '../widgets/custom_drawer_app_mode.dart';
+import 'fake_pages.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});

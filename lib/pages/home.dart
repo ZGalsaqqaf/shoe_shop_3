@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shoe_shop_3/my_tests/test_class_drawer.dart';
-import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/widgets/custom_card_no_details.dart';
 import 'package:shoe_shop_3/widgets/custom_card_with_discount.dart';
 import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
 import '../widgets/custom_drawer_app_mode.dart';
+import 'fake_pages.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

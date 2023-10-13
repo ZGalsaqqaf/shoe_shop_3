@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shoe_shop_3/pages/category.dart';
-import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
 import 'package:shoe_shop_3/widgets_old/custom_drawer.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
+import '../pages/fake_pages.dart';
 import '../widgets_old/custom_card.dart';
 
 class TestHomePage3 extends StatefulWidget {
