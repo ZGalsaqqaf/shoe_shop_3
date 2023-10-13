@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shoe_shop_3/widgets/custom_carousel_slider.dart';
 import 'package:shoe_shop_3/widgets/item_slider.dart';
 
 class ItemPage extends StatefulWidget {
@@ -42,10 +41,11 @@ class _ItemPageState extends State<ItemPage> {
             padding: EdgeInsets.all(16.0),
             child: Builder(
               builder: (context) {
+                List <String> images = [];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ItemSlider(context),
+                    ItemSlider(context, images),
                     SizedBox(height: 16.0),
                     Form(
                       key: _formKey,

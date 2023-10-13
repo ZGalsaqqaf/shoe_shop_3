@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/models/category_model.dart';
+import 'package:shoe_shop_3/pages/category_files/product_getbyid.dart';
 import 'package:shoe_shop_3/pages/category_files/products_audience.dart';
 import 'package:shoe_shop_3/pages/item.dart';
 import 'package:shoe_shop_3/reops/category_repo.dart';
@@ -89,7 +90,7 @@ class _ProductAudienceState extends State<ProductAudience> {
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) {
-                          return ItemPage();
+                          return ProductGetById(itemId: prod.id??'0',);
                         },
                       ));
                       print(
