@@ -139,7 +139,10 @@ class _LoginPage2State extends State<LoginPage2> {
                           List<UserModel> users = await user.getByField(
                               'email', _emailController.text);
                           var userId = users[0].id;
-                          AuthenticationProvider.login(userId ?? '');
+                          var userName = users[0].username;
+                          var userEmail = users[0].email;
+                          var userProfile = users[0].profile;
+                          AuthenticationProvider.login(userId ?? '', userName ??'', userEmail ??'', userProfile ??'');
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
                               return HomeBtmNavBarPage();
