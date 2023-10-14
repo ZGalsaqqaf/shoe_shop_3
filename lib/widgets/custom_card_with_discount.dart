@@ -1,19 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget CustomCardWithDiscount(BuildContext context, bool showDisCount, String productName, String details, double price, String img) {
-  // String itemImage = "assets/images/women/sneakers/wsk5.webp";
-  // String itemName = "Sneakers";
-  // String itemDetails = "xxxx xxxxxxxx xxxx";
-  // double itemPrice = 10;
-  // bool showDiscount = true;
-
   return Container(
     margin: EdgeInsets.all(5),
     width: MediaQuery.of(context).size.width * 0.3,
-    height: MediaQuery.of(context).size.height * 0.30,
+    height: MediaQuery.of(context).size.height * 0.40,
     decoration: BoxDecoration(
       color: Theme.of(context).colorScheme.secondary,
       borderRadius: BorderRadius.circular(15),
@@ -65,33 +57,38 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount, String pr
           ),
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.0001,
+          height: MediaQuery.of(context).size.height * 0.008,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.01),
-          child: Column(
-            children: [
-              Text(
-                productName,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0001,
-              ),
-              Text(
-                details,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.008,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.04),
-                child: Row(
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        productName,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.0001,
+                      ),
+                      Text(
+                        details,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.008,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -105,8 +102,8 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount, String pr
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],

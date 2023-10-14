@@ -29,7 +29,7 @@ class AppTheme {
       ),
       headline2: TextStyle(
         color: Color.fromARGB(219, 158, 126, 114),
-        fontSize: 15,
+        fontSize: 13,
       ),
       headline3: TextStyle(
         color: Colors.black,

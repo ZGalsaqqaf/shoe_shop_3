@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/models/category_model.dart';
+import 'package:shoe_shop_3/pages/products.dart';
 import 'package:shoe_shop_3/reops/category_repo.dart';
 import 'package:shoe_shop_3/widgets/custom_card_no_details.dart';
 import 'package:shoe_shop_3/widgets/custom_card_with_discount.dart';
@@ -9,7 +10,7 @@ import 'package:shoe_shop_3/widgets/search_appbar.dart';
 import '../models/product_model.dart';
 import '../reops/product_repo.dart';
 import '../widgets/custom_drawer_app_mode.dart';
-import 'fake_pages.dart';
+import 'item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -85,7 +86,13 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             var category = items[index];
                             return GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) {
+                                      return ProductsPage(value1: '${category.name}', value2: '0',);
+                                    },
+                                  ));
+                                },
                                 child: CustomCardNoDetails(context,
                                     category.name ?? '', category.image ?? ''));
                           },
@@ -118,21 +125,41 @@ class _HomePageState extends State<HomePage> {
 
                     var items = snapshot.data ?? [];
                     return Container(
-                      height: 200.0, // Add a fixed height to the container
+                      height: 210.0, // Add a fixed height to the container
                       child: RefreshIndicator(
                         onRefresh: () async {
                           setState(() {});
                         },
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                3, // Display three items in each line
+                            childAspectRatio:
+                                2 / 3.7, // Adjust the aspect ratio as needed
+                          ),
+                          scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
                             var product = items[index];
                             var cate = product.cateId![0];
                             return GestureDetector(
-                                onTap: () {
-                                  print(items.length);
-                                },
-                                child: CustomCardWithDiscount(context, true, cate.name??'', product.details??'', product.price??0.0, product.image??''));
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) {
+                                      return ItemPage(itemId: product.id ?? '',);
+                                    },
+                                  ));
+                                print(items.length);
+                              },
+                              child: CustomCardWithDiscount(
+                                context,
+                                true,
+                                cate.name ?? '',
+                                product.details ?? '',
+                                product.price ?? 0.0,
+                                product.image ?? '',
+                              ),
+                            );
                           },
                           itemCount: items.length,
                         ),
