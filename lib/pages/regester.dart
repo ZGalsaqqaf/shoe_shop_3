@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shoe_shop_3/models/user_model.dart';
+import 'package:shoe_shop_3/myclasses/choose_color_product.dart';
 import 'package:shoe_shop_3/pages/login.dart';
+import 'package:shoe_shop_3/reops/user_repo.dart';
 import 'package:shoe_shop_3/widgets/custom_input_decoration.dart';
 import '../home_bottom_nav_var.dart';
+import 'login2.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -11,254 +15,251 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
   String _password = '';
-  bool _isChecked = false;
   bool _obscurePassword = true;
   bool _obscureConfPassword = true;
 
+  bool _isChecked = false;
+
+  UserRepository users = UserRepository();
+
+  bool _isEmailExist = false;
+  bool _isUsernameExist = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              // Handle Home navigation
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return HomeBtmNavBarPage();
-              }));
-            },
-            icon: Icon(
-              Icons.arrow_back,
-            ),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            // Handle Home navigation
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return HomeBtmNavBarPage();
+            }));
+          },
+          icon: Icon(
+            Icons.arrow_back,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "First Name"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Last Name"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your last name';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Phone Number"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      final phoneRegex = r'^7\d{8}$';
-                      if (!RegExp(phoneRegex).hasMatch(value)) {
-                        return 'Invalid phone number format';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Country"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your country';
-                      }
-                      final countryRegx = r'^[a-zA-Z]+$';
-                      if (!RegExp(countryRegx).hasMatch(value)) {
-                        return 'Just letters are allowed';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Address"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your Address';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Username"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a username';
-                      }
-                      if (value.length < 6) {
-                        return 'Username must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: CustomInputDecoration(context, "Emali"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      final emailRegex =
-                          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
-                      if (!RegExp(emailRegex).hasMatch(value)) {
-                        return 'Invalid email address';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                        child: Icon(
-                          _obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  controller: _usernameController,
+                  decoration: CustomInputDecoration(context, "Username"),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a username';
+                    }
+                    if (value.length < 3) {
+                      return 'Username must be at least 3 characters';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: CustomInputDecoration(context, "Emali"),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    final emailRegex =
+                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
+                    if (!RegExp(emailRegex).hasMatch(value)) {
+                      return 'Invalid email address';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        width: 2,
                       ),
                     ),
-                    obscureText: _obscurePassword,
-                    onChanged: (value) {
-                      _password = value;
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary,
-                          width: 2,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.tertiary,
-                        ),
-                      ),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _obscureConfPassword = !_obscureConfPassword;
-                          });
-                        },
-                        child: Icon(
-                          _obscureConfPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
-                    obscureText: _obscureConfPassword,
-                    validator: (value) {
-                      if (value != _password) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.0),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _isChecked,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              _isChecked = value ?? false;
-                            },
-                          );
-                        },
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                      child: Icon(
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
-                      Text(
-                        'I agree to the terms and conditions',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(200, 45)),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        if (_isChecked) {
-                          // Perform form submission or other operations
-                          print('Form is valid');
-                        }
-                      }
-                    },
-                    child: Text('Submit',
-                    style: Theme.of(context).textTheme.headline5,),
                   ),
-                  SizedBox(height: 16.0),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) {
-                          return LoginPage();
-                        }),
+                  obscureText: _obscurePassword,
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    if (value.length < 3) {
+                      return 'Password must be at least 3 characters';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.tertiary,
+                        width: 2,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureConfPassword = !_obscureConfPassword;
+                        });
+                      },
+                      child: Icon(
+                        _obscureConfPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                  obscureText: _obscureConfPassword,
+                  validator: (value) {
+                    if (value != _password) {
+                      return 'Passwords do not match';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(Size(200, 45)),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      String _username = _usernameController.text;
+                      String _email = _emailController.text;
+                      bool isUsernameExists =
+                          await users.isUsernameExists(_username);
+                      bool isEmailExists = await users.isEmailExists(_email);
+
+                      if (isUsernameExists) {
+                        // Handle the case when the username already exists
+                        setState(() {
+                          _isUsernameExist = true;
+                        });
+                        print('Username already exists');
+                        return;
+                      }
+
+                      if (isEmailExists) {
+                        // Handle the case when the email already exists
+                        setState(() {
+                          _isEmailExist = true;
+                        });
+                        print('Email already exists');
+                        return;
+                      }
+                      UserModel user = UserModel(
+                        username: _username,
+                        email: _email,
+                        password: _password,
                       );
-                    },
-                    child: Text('Already have an account? Login',
-                          style: Theme.of(context).textTheme.bodyText1,),
+                      try {
+                        UserModel addedUser = await users.addUser(user);
+                        print('User added successfully: ${addedUser.username}');
+                        setState(() {
+                          _isEmailExist = false;
+                          _isUsernameExist = false;
+                        });
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return LoginPage2(email: _email, password: _password,);
+                          }),
+                        );
+                        // Perform any desired actions after successful user addition
+                      } catch (e) {
+                        print('Failed to add user: $e');
+                        // Handle the error, such as showing an error message to the user
+                      }
+                    }
+                  },
+                  child: Text(
+                    'Submit',
+                    style: Theme.of(context).textTheme.headline5,
                   ),
-                ],
-              ),
+                ),
+                SizedBox(height: 10.0),
+                _isUsernameExist
+                    ? Center(
+                        child: Text(
+                          "Username is Already Exists",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      )
+                    : _isEmailExist
+                        ? Center(
+                            child: Text(
+                              "Email is Already Exists",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          )
+                        : Text(""),
+                SizedBox(height: 10.0),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) {
+                        return LoginPage();
+                      }),
+                    );
+                  },
+                  child: Text(
+                    'Already have an account? Login',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }

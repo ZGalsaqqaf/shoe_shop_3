@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shoe_shop_3/models/product_model.dart';
 
+import '../myclasses/api.dart';
+
 class ProductShoeRepository {
   late Dio dio;
-  String apiLink = 'https://shoes-0c15.restdb.io/rest/product';
-  String apiKey = "3d7f9c333161d9fb62ff9fe040ced9ca4cc16";
+  String apiLink = productsApiLink;
+  String apiKey = theApiKey;
 
   ProductShoeRepository() {
     dio = Dio();
@@ -40,6 +42,33 @@ class ProductShoeRepository {
       rethrow;
     }
   } // end getAll
+
+  // Future<List<ProductShoeModel>> getAllExcept() async {
+  //   try {
+  //     await Future.delayed(Duration(seconds: 1));
+
+  //     var res = await dio.get(
+  //       apiLink,
+  //       options: Options(headers: {
+  //         'Content-Type': 'application/json',
+  //         'x-apikey': apiKey,
+  //       }),
+  //     );
+  //     List<ProductShoeModel> items = [];
+  //     if (res.statusCode == 200) {
+  //       var data = res.data as List;
+  //       if (data.isNotEmpty) {
+  //         for (var item in data) {
+  //           items.add(ProductShoeModel.fromJson(item));
+  //         }
+  //       }
+  //     }
+
+  //     return items;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // } // end getAllExcept
 
   Future<ProductShoeModel?> getById(String id) async {
     try {

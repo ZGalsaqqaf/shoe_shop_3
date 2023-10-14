@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 import '../models/audience_model.dart';
+import '../myclasses/api.dart';
 
 
 class AudienceRepository {
   late Dio dio;
-  String apiLink = 'https://shoes-0c15.restdb.io/rest/audience';
-  String apiKey = "3d7f9c333161d9fb62ff9fe040ced9ca4cc16";
+  String apiLink = audiencesApiLink;
+  String apiKey = theApiKey;
 
   AudienceRepository() {
     dio = Dio();

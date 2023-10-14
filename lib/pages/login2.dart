@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:shoe_shop_3/reops/user_repo.dart';
+import '../helper/auth_helper.dart';
+import '../home_bottom_nav_var.dart';
+import '../models/user_model.dart';
 import '../pages/regester.dart';
 import '../widgets/custom_input_decoration.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginPage2 extends StatefulWidget {
+  const LoginPage2({Key? key, required this.email, required this.password})
+      : super(key: key);
+
+  final String email;
+  final String password;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage2> createState() => _LoginPage2State();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPage2State extends State<LoginPage2> {
   final _formKey = GlobalKey<FormState>();
-  String _password = ''; // لمقارنة password and confirm password
-  bool _isChecked = false;
-  bool _obscurePassword = true; // للسماح بأن تكون كلمة السر مرئية
+  String _password = '';
+  bool _obscurePassword = true;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  UserRepository user = UserRepository();
+  bool _isAuthenticated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.text = widget.email;
+    _passwordController.text = widget.password;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     decoration: CustomInputDecoration(context, "Email"),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -59,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       // labelStyle:  Theme.of(context).textTheme.bodyText2,
@@ -96,8 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a password';
                       }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters';
+                      if (value.length < 3) {
+                        return 'Password must be at least 3 characters';
                       }
                       return null;
                     },
@@ -107,11 +126,30 @@ class _LoginPageState extends State<LoginPage> {
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(200, 45)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
-                        if (_isChecked) {
-                          // Perform form submission or other operations
-                          print('Form is valid');
+                        bool isAuthenticated = await user.authenticateUser(
+                            _emailController.text, _passwordController.text);
+
+                        if (isAuthenticated) {
+                          setState(() {
+                            _isAuthenticated = false;
+                          });
+                          print('Logged in successfully');
+                          List<UserModel> users = await user.getByField(
+                              'email', _emailController.text);
+                          var userId = users[0].id;
+                          AuthenticationProvider.login(userId ?? '');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return HomeBtmNavBarPage();
+                            }),
+                          );
+                        } else {
+                          setState(() {
+                            _isAuthenticated = true;
+                          });
+                          print('Email and password do not exist');
                         }
                       }
                     },
@@ -120,7 +158,16 @@ class _LoginPageState extends State<LoginPage> {
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  SizedBox(height: 10.0),
+                  _isAuthenticated
+                      ? Center(
+                          child: Text(
+                            "Can't find this account",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        )
+                      : Text(""),
+                  SizedBox(height: 10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shoe_shop_3/models/images_product_model.dart';
 
+import '../myclasses/api.dart';
+
 class ImagesProductRepository {
   late Dio dio;
-  String apiLink = 'https://shoes-0c15.restdb.io/rest/productimage';
-  String apiKey = "3d7f9c333161d9fb62ff9fe040ced9ca4cc16";
+  String apiLink = imageproductApiLink;
+  String apiKey = theApiKey;
 
   ImagesProductRepository() {
     dio = Dio();

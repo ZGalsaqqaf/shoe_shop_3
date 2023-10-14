@@ -5,10 +5,9 @@ import 'package:shoe_shop_3/myclasses/category_class.dart';
 import 'package:shoe_shop_3/pages/about.dart';
 import 'package:shoe_shop_3/pages/account.dart';
 import 'package:shoe_shop_3/pages/cart.dart';
-import 'package:shoe_shop_3/pages/category.dart';
-import 'package:shoe_shop_3/pages/favorites.dart';
-import 'package:shoe_shop_3/pages/login.dart';
 import 'package:shoe_shop_3/theme/theme_provider.dart';
+
+import '../pages/login2.dart';
 
 CategoryGenerator catGen = CategoryGenerator();
 IconData appModeIcon = Icons.light_mode;
@@ -50,16 +49,6 @@ Widget CustomDrawerWithAppMode(
           },
         ),
         Divider(),
-        // ListTile(
-        //   title: Text(
-        //     'Categories',
-        //     style: TextStyle(
-        //       fontWeight: FontWeight.bold,
-        //       fontSize: 16,
-        //       color: Theme.of(context).colorScheme.tertiary,
-        //     ),
-        //   ),
-        // ),
         ListTile(
           leading: Icon(Icons.shopping_cart,
             color: Theme.of(context).colorScheme.tertiary,
@@ -74,20 +63,6 @@ Widget CustomDrawerWithAppMode(
           },
         ),
         Divider(),
-        // ListTile(
-        //   leading: Icon(Icons.favorite,
-        //     color: Theme.of(context).colorScheme.tertiary,
-        //   ),
-        //   title: Text('My Favorite',
-        //   style: Theme.of(context).textTheme.headline3,),
-        //   onTap: () {
-        //     // Handle Home navigation
-        //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        //       return FavoritePage();
-        //     }));
-        //   },
-        // ),
-        // Divider(),
         ListTile(
           leading: Icon(appModeIcon,
             color: Theme.of(context).colorScheme.tertiary,
@@ -122,7 +97,7 @@ Widget CustomDrawerWithAppMode(
           onTap: () {
             // Handle Home navigation
             Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return LoginPage();
+              return LoginPage2(email: "", password: "",);
             }));
           },
         ),

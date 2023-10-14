@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shoe_shop_3/models/category_model.dart';
 
+import '../myclasses/api.dart';
+
 class CategoryRepository {
   late Dio dio;
-  String apiLink = 'https://shoes-0c15.restdb.io/rest/category';
-  String apiKey = "3d7f9c333161d9fb62ff9fe040ced9ca4cc16";
+  String apiLink = categoriesApiLink;
+  String apiKey = theApiKey;
 
   CategoryRepository() {
     dio = Dio();

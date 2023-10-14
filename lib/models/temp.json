@@ -1,16 +1,7 @@
 {
-    "_id": "6524cead3c0fd4270000123d",
-    "Prod_id": [{
-        "_id": "65236f89bd6e396200012d75",
-        "Cate_id": ["65236c30bd6e396200012d28"],
-        "Audi_id": ["65236b1bbd6e396200012d09"],
-        "Details": "Comfortable women's heals",
-        "Date": "2023-10-09T03:10:15.000Z",
-        "_created": "2023-10-09T03:12:09.587Z",
-        "_changed": "2023-10-13T03:40:40.344Z",
-        "Price": 30.5,
-        "Idx": 17,
-        "Image": "https://i.pinimg.com/736x/c6/bb/b3/c6bbb37e5767c116671a435c0ba8988d.jpg"
-    }],
-    "Image": "https://i.pinimg.com/564x/85/23/da/8523da302caa7ee0975f87b45dfed752.jpg"
+    "_id": "652a16353c0fd4270000cd94",
+    "Username": "zhr",
+    "email": "zhr@gmail.com",
+    "Password": "1234",
+    "Profile": ""
 }
