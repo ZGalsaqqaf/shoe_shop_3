@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shoe_shop_3/widgets/search_appbar.dart';
-
+import 'package:shoe_shop_3/models/user_model.dart';
+import 'package:shoe_shop_3/pages/edit_account.dart';
+import 'package:shoe_shop_3/reops/user_repo.dart';
 import '../helper/auth_helper.dart';
 import '../home_bottom_nav_var.dart';
-import '../widgets/custom_botto_nav_bar.dart';
 import '../widgets/custom_drawer_app_mode.dart';
+import '../widgets/search_appbar.dart';
 
 class UserAccount extends StatefulWidget {
   const UserAccount({super.key});
@@ -14,76 +15,91 @@ class UserAccount extends StatefulWidget {
 }
 
 class _UserAccountState extends State<UserAccount> {
-  String _name = 'Zhr';
-  String _email = 'zhr@example.com';
-  String _address = '123 Main St, City, Country';
-  String _imageProfile = 'assets/images/profiles/profile1.png';
+  IconData appModeIcon = Icons.sunny;
+
+  void updateAppModeIcon(IconData newIcon) {
+    setState(() {
+      appModeIcon = newIcon;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    IconData appModeIcon = Icons.sunny;
-
-    void updateAppModeIcon(IconData newIcon) {
-      setState(() {
-        appModeIcon = newIcon;
-      });
-    }
-
+    var _userId = AuthenticationProvider.userId;
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 50.0,
-              backgroundColor: Colors.black,
-              backgroundImage: AssetImage(
-                  _imageProfile), // Add your profile image asset here
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Welcome, $_name!',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Email: $_email',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Address: $_address',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Handle logout action
-              },
-              child: Text(
-                'Edit',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-            SizedBox(height: 30.0),
-            ElevatedButton(
-              onPressed: () {
-                AuthenticationProvider.logout();
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return HomeBtmNavBarPage();
-                  }),
-                );
-              },
-              child: Text(
-                'Logout',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-          ],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: FutureBuilder<UserModel?>(
+          future: UserRepository().getById(_userId ?? ''),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              UserModel thisUser = snapshot.data!;
+              var userId = thisUser.id;
+              var userName = thisUser.username;
+              var userEmail = thisUser.email;
+              var userProfile = thisUser.profile;
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 50.0,
+                      backgroundColor: Colors.black,
+                      backgroundImage: AssetImage(userProfile ?? 'assets/images/profiles/profile1.png'),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Welcome, $userName!',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Email: $userEmail',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    SizedBox(height: 16.0),
+                    
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return EditAccountPage(userId: userId??'', currentUsername: userName ??'', currentProfileImage: userProfile??'',);
+                          }));
+                      },
+                      child: Text(
+                        'Edit',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                    SizedBox(height: 30.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        AuthenticationProvider.logout();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return HomeBtmNavBarPage();
+                          }),
+                        );
+                      },
+                      child: Text(
+                        'Logout',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Text('No thisProduct found');
+            }
+          },
         ),
       ),
     );
