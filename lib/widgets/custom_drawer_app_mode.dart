@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoe_shop_3/models/user_model.dart';
@@ -39,8 +41,10 @@ Widget CustomDrawerWithAppMode(
                     accountName: Text(uName ?? "Username"),
                     accountEmail: Text(uEmail ?? "aa@gmail.com"),
                     currentAccountPicture: CircleAvatar(
-                      backgroundImage: AssetImage(
-                          uProfile ?? "assets/images/profiles/profile1.png"),
+                      backgroundImage: uProfile!.isNotEmpty
+                              ? MemoryImage(base64Decode(uProfile))
+                                  as ImageProvider<Object>?
+                              : AssetImage("assets/images/profiles/profile1.png"),
                     ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,

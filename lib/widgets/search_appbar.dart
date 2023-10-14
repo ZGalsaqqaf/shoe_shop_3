@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/pages/about.dart';
 import 'package:shoe_shop_3/pages/account.dart';
@@ -50,8 +52,10 @@ AppBar SearchAppBar(BuildContext context) {
                   }));
                 },
                 child: CircleAvatar(
-                  backgroundImage: AssetImage(
-                      uProfile ?? "assets/images/profiles/profile1.png"),
+                  backgroundImage: uProfile!.isNotEmpty
+                              ? MemoryImage(base64Decode(uProfile))
+                                  as ImageProvider<Object>?
+                              : AssetImage("assets/images/shoeshop1.png"),
                 ),
               )
             : GestureDetector(

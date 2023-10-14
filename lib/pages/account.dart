@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/models/user_model.dart';
 import 'package:shoe_shop_3/pages/edit_account.dart';
@@ -52,7 +54,10 @@ class _UserAccountState extends State<UserAccount> {
                     CircleAvatar(
                       radius: 50.0,
                       backgroundColor: Colors.black,
-                      backgroundImage: AssetImage(userProfile ?? 'assets/images/profiles/profile1.png'),
+                      backgroundImage: userProfile!.isNotEmpty
+                              ? MemoryImage(base64Decode(userProfile))
+                                  as ImageProvider<Object>?
+                              : AssetImage("assets/images/profiles/profile1.png"),
                     ),
                     SizedBox(height: 16.0),
                     Text(
@@ -70,7 +75,7 @@ class _UserAccountState extends State<UserAccount> {
                       onPressed: () {
                         Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
-                            return EditAccountPage(userId: userId??'', currentUsername: userName ??'', currentProfileImage: userProfile??'',);
+                            return EditAccountPage(userId: userId??'', currentUsername: userName ??'', currentProfileImage: userProfile,);
                           }));
                       },
                       child: Text(
@@ -78,7 +83,7 @@ class _UserAccountState extends State<UserAccount> {
                         style: Theme.of(context).textTheme.headline5,
                       ),
                     ),
-                    SizedBox(height: 30.0),
+                    SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: () {
                         AuthenticationProvider.logout();

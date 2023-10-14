@@ -30,21 +30,6 @@ class _EditAccountPageState extends State<EditAccountPage> {
 
   var _selectedImageBytes;
 
-  @override
-  void initState() {
-    super.initState();
-    _usernameController.text = widget.currentUsername;
-    if (widget.currentProfileImage.isNotEmpty) {
-      _selectedImageBytes = base64Decode(widget.currentProfileImage);
-    }
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    super.dispose();
-  }
-
   Future<void> _selectImage() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -57,6 +42,19 @@ class _EditAccountPageState extends State<EditAccountPage> {
         _imgController.text = encodedImage;
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController.text = widget.currentUsername;
+    _imgController.text = widget.currentProfileImage;
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
   }
 
   UserRepository users = UserRepository();
@@ -92,16 +90,29 @@ class _EditAccountPageState extends State<EditAccountPage> {
                         CircleAvatar(
                           radius: 50.0,
                           backgroundColor: Colors.black,
-                          backgroundImage: _selectedImageBytes != null
-                              ? MemoryImage(_selectedImageBytes!)
-                              : null,
+                          backgroundImage: userProfile!.isNotEmpty
+                              ? MemoryImage(base64Decode(userProfile))
+                                  as ImageProvider<Object>?
+                              : AssetImage("assets/images/profiles/profile1.png"),
                         ),
                         SizedBox(height: 16.0),
                         ElevatedButton(
-                          onPressed: () async {
-                            // _selectImage();
-                          },
+                          onPressed: _selectImage,
                           child: Text('Select Profile Picture'),
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          readOnly: true,
+                          controller: _imgController,
+                          decoration: InputDecoration(
+                            hintText: 'Select profile picture',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            contentPadding: EdgeInsets.only(left: 60.0),
+                          ),
                         ),
                         SizedBox(height: 16.0),
                         TextField(
@@ -115,6 +126,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
                           onPressed: () async {
                             String newUsername = _usernameController.text;
 
+                            print('====${_imgController.text}');
+
                             UserModel user = UserModel(
                               username: _usernameController.text,
                               email: thisUser.email,
@@ -122,12 +135,14 @@ class _EditAccountPageState extends State<EditAccountPage> {
                               profile: _imgController.text,
                             );
                             try {
-                              UserModel addedUser =
-                                  await users.updateUser(thisUser.id ?? '', user);
+                              UserModel addedUser = await users.updateUser(
+                                  thisUser.id ?? '', user);
                               print(
                                   'User updated successfully: ${addedUser.username}');
                               setState(() {
-                                AuthenticationProvider.userName = _usernameController.text;
+                                AuthenticationProvider.userName =
+                                    _usernameController.text;
+                                AuthenticationProvider.userProfile = _imgController.text;
                               });
                             } catch (e) {
                               print('Failed to update user: $e');
