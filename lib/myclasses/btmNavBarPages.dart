@@ -9,5 +9,5 @@ var pagesList = [
     // CategoryPage(),
     BaseCategoriesPage(),
     CartPage(),
-    UserAccount(),
+    // UserAccount(),
   ];

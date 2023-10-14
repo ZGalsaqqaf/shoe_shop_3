@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/widgets/search_appbar.dart';
 
+import '../helper/auth_helper.dart';
+import '../home_bottom_nav_var.dart';
 import '../widgets/custom_botto_nav_bar.dart';
 import '../widgets/custom_drawer_app_mode.dart';
 
@@ -16,7 +18,7 @@ class _UserAccountState extends State<UserAccount> {
   String _email = 'zhr@example.com';
   String _address = '123 Main St, City, Country';
   String _imageProfile = 'assets/images/profiles/profile1.png';
-  
+
   @override
   Widget build(BuildContext context) {
     IconData appModeIcon = Icons.sunny;
@@ -31,7 +33,6 @@ class _UserAccountState extends State<UserAccount> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
-      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -50,7 +51,7 @@ class _UserAccountState extends State<UserAccount> {
             SizedBox(height: 16.0),
             Text(
               'Email: $_email',
-              style:Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.headline2,
             ),
             SizedBox(height: 16.0),
             Text(
@@ -70,10 +71,15 @@ class _UserAccountState extends State<UserAccount> {
             SizedBox(height: 30.0),
             ElevatedButton(
               onPressed: () {
-                // Handle logout action
+                AuthenticationProvider.logout();
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return HomeBtmNavBarPage();
+                  }),
+                );
               },
               child: Text(
-                'Logout', 
+                'Logout',
                 style: Theme.of(context).textTheme.headline5,
               ),
             ),
