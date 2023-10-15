@@ -55,13 +55,13 @@ class _UserAccountState extends State<UserAccount> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {});
-                            },
-                            child: Icon(Icons.refresh),
-                          ),
-                          SizedBox(height: 30.0),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     setState(() {});
+                          //   },
+                          //   child: Icon(Icons.refresh),
+                          // ),
+                          // SizedBox(height: 30.0),
                           CircleAvatar(
                             radius: 50.0,
                             backgroundColor: Colors.black,
@@ -91,11 +91,15 @@ class _UserAccountState extends State<UserAccount> {
                                   currentUsername: userName ?? '',
                                   currentProfileImage: userProfile ?? '',
                                 );
-                              }));
+                              }))..then((_) {
+                                setState(() {
+                                  // Refresh the user account page here
+                                });
+                              });
                                 print("====== isEditProfile:  $isEditProfile ======");
                               if (isEditProfile != null) {
                                 print("hello==========");
-                                setState(() {});
+                                // setState(() {});
                               }
                             },
                             child: Text(
