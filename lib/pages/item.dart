@@ -5,6 +5,8 @@ import 'package:shoe_shop_3/widgets/custom_item_slider_api.dart';
 
 import '../../models/product_model.dart';
 import '../../myclasses/choose_color_product.dart';
+import '../helper/auth_helper.dart';
+import 'login2.dart';
 
 class ItemPage extends StatefulWidget {
   const ItemPage({super.key, required this.itemId});
@@ -45,7 +47,7 @@ class _ItemPageState extends State<ItemPage> {
             builder: (context, snapshot) {
               // if (snapshot.connectionState == ConnectionState.waiting) {
               //   return Center(child: CircularProgressIndicator());
-              // } else 
+              // } else
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (snapshot.hasData) {
@@ -179,7 +181,7 @@ class _ItemPageState extends State<ItemPage> {
                                       icon: Icon(Icons.remove),
                                       onPressed: () {
                                         setState(() {
-                                            _piecesNumber--;
+                                          _piecesNumber--;
                                         });
                                       },
                                     ),
@@ -187,7 +189,7 @@ class _ItemPageState extends State<ItemPage> {
                                       icon: Icon(Icons.add),
                                       onPressed: () {
                                         setState(() {
-                                            _piecesNumber++;
+                                          _piecesNumber++;
                                         });
                                       },
                                     ),
@@ -202,16 +204,64 @@ class _ItemPageState extends State<ItemPage> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    if (_formKey.currentState?.validate() ??
-                                        false) {
-                                      _formKey.currentState?.save();
+                                    if (AuthenticationProvider
+                                        .isLoggedIn.value) {
+                                      // User is logged in, allow adding to cart
+                                      if (_formKey.currentState?.validate() ??
+                                          false) {
+                                        _formKey.currentState?.save();
 
-                                      print('Form is valid');
-                                      print('Selected Color: $_selectedColor');
-                                      print('Selected Size: $_size');
-                                      print('Amount of Pieces: $_piecesNumber');
+                                        print('Form is valid');
+                                        print(
+                                            'Selected Color: $_selectedColor');
+                                        print('Selected Size: $_size');
+                                        print(
+                                            'Amount of Pieces: $_piecesNumber');
 
-                                      _showSnackBar(context);
+                                        _showSnackBar(context);
+                                      }
+                                    } else {
+                                      // User is not logged in, show alert to go and login first
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Login Required'),
+                                            content: Text(
+                                                'Please login first to add items to the cart.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pop(); // Close the dialog
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('OK'),
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                      return LoginPage2(
+                                                        email: "",
+                                                        password: "",
+                                                        redirectPage: 'pop',
+                                                      );
+                                                    }),
+                                                  ).then((_) {
+                                                    setState(() {
+                                                      // Refresh the user account page here
+                                                    });
+                                                  });
+                                                  // Redirect to the login page or perform any other action
+                                                  // to handle the login process.
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     }
                                   },
                                   child: Text(
@@ -220,6 +270,32 @@ class _ItemPageState extends State<ItemPage> {
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ),
+                                // ElevatedButton(
+                                //   style: ButtonStyle(
+                                //     backgroundColor:
+                                //         MaterialStateProperty.all<Color>(
+                                //       Theme.of(context).colorScheme.primary,
+                                //     ),
+                                //   ),
+                                //   onPressed: () {
+                                //     if (_formKey.currentState?.validate() ??
+                                //         false) {
+                                //       _formKey.currentState?.save();
+
+                                //       print('Form is valid');
+                                //       print('Selected Color: $_selectedColor');
+                                //       print('Selected Size: $_size');
+                                //       print('Amount of Pieces: $_piecesNumber');
+
+                                //       _showSnackBar(context);
+                                //     }
+                                //   },
+                                //   child: Text(
+                                //     'Add to Cart',
+                                //     style:
+                                //         Theme.of(context).textTheme.bodyText2,
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

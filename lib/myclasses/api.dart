@@ -44,6 +44,7 @@ String productsApiLink = 'https://shoes-0d64.restdb.io/rest/product';
 String categoriesApiLink = 'https://shoes-0d64.restdb.io/rest/category';
 String audiencesApiLink = 'https://shoes-0d64.restdb.io/rest/audience';
 String imageproductApiLink = 'https://shoes-0d64.restdb.io/rest/productimage';
+String cartUserApiLink = 'https://shoes-0d64.restdb.io/rest/cart';
 
 String theApiKey = '700210e3cda96fc4c32e24b0b151ad14f3dc5';
 /////////////////////

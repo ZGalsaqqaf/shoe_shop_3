@@ -135,6 +135,7 @@ Widget CustomDrawerWithAppMode(
                 return LoginPage2(
                   email: "",
                   password: "",
+                  redirectPage: 'home',
                 );
               }));
             },

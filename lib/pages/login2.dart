@@ -5,13 +5,19 @@ import '../home_bottom_nav_var.dart';
 import '../models/user_model.dart';
 import '../pages/regester.dart';
 import '../widgets/custom_input_decoration.dart';
+import 'fake_pages.dart';
 
 class LoginPage2 extends StatefulWidget {
-  const LoginPage2({Key? key, required this.email, required this.password})
-      : super(key: key);
+  const LoginPage2({
+    Key? key,
+    required this.email,
+    required this.password,
+    required this.redirectPage,
+  }) : super(key: key);
 
   final String email;
   final String password;
+  final String redirectPage;
 
   @override
   State<LoginPage2> createState() => _LoginPage2State();
@@ -142,12 +148,26 @@ class _LoginPage2State extends State<LoginPage2> {
                           var userName = users[0].username;
                           var userEmail = users[0].email;
                           var userProfile = users[0].profile;
-                          AuthenticationProvider.login(userId ?? '', userName ??'', userEmail ??'', userProfile ??'');
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return HomeBtmNavBarPage();
-                            }),
-                          );
+                          AuthenticationProvider.login(
+                              userId ?? '',
+                              userName ?? '',
+                              userEmail ?? '',
+                              userProfile ?? '');
+                          if (widget.redirectPage == 'home' || widget.redirectPage == '') {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) {
+                                return HomeBtmNavBarPage();
+                              }),
+                            );
+                          } else if (widget.redirectPage == 'pop') {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          }
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(builder: (context) {
+                          //     return HomeBtmNavBarPage();
+                          //   }),
+                          // );
                         } else {
                           setState(() {
                             _isAuthenticated = true;

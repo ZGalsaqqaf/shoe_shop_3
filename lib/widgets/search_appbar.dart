@@ -66,6 +66,7 @@ AppBar SearchAppBar(BuildContext context) {
                     return LoginPage2(
                       email: "",
                       password: "",
+                      redirectPage: 'home',
                     );
                   }));
                 },

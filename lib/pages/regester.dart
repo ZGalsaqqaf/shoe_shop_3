@@ -210,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return LoginPage2(email: _email, password: _password,);
+                            return LoginPage2(email: _email, password: _password, redirectPage: 'home',);
                           }),
                         );
                         // Perform any desired actions after successful user addition
