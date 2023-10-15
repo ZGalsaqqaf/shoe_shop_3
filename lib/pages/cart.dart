@@ -1,12 +1,7 @@
-// Get cards of Each Audience ==> Sneakers, Heels, Boots, ....
-
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/helper/auth_helper.dart';
-import 'package:shoe_shop_3/models/category_model.dart';
 import 'package:shoe_shop_3/pages/item_edit.dart';
-import 'package:shoe_shop_3/pages/products.dart';
 import 'package:shoe_shop_3/reops/cart_user_repo.dart';
-import 'package:shoe_shop_3/reops/category_repo.dart';
 
 import '../../widgets/custom_drawer_app_mode.dart';
 import '../../widgets/search_appbar.dart';
@@ -14,7 +9,6 @@ import '../models/cart_user_model.dart';
 import '../models/product_model.dart';
 import '../reops/product_repo.dart';
 
-double totalPrice = 0;
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -88,7 +82,7 @@ class _CartPageState extends State<CartPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Total: \$100"',
+              'Total: \$"',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             ElevatedButton(
@@ -130,6 +124,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double totalPrice = 0;
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Padding(
@@ -153,8 +149,6 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     double? prodPrice = prod.price?.toDouble();
                     var prodDetails = prod.details;
                     var prodImage = prod.image;
-
-                    totalPrice += prodPrice ?? 0.0;
 
                     return Image.network(
                       prodImage ?? '',
@@ -193,8 +187,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         double? prodPrice = prod.price?.toDouble();
                         var prodDetails = prod.details;
                         var prodImage = prod.image;
+                        var quantity = widget.cartItem.numPieces;
+                        var total = prodPrice! * quantity!;
 
-                        totalPrice += prodPrice ?? 0.0;
+                        totalPrice += total;
 
                         return GestureDetector(
                           onTap: () {
@@ -212,7 +208,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               ),
                               SizedBox(height: 8.0),
                               Text(
-                                '\$${prodPrice.toString()}',
+                                '\$${(total).toString()}',
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                             ],
