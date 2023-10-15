@@ -85,8 +85,45 @@ class CartUserRepository {
       if (response.statusCode == 200) {
         final data = response.data as List<dynamic>;
         final carts = <CartUserModel>[];
-        for (var audienceData in data) {
-          carts.add(CartUserModel.fromJson(audienceData));
+        for (var cardData in data) {
+          carts.add(CartUserModel.fromJson(cardData));
+        }
+        return carts;
+      } else {
+        throw Exception('Failed to fetch Category by field');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  } // end getByField
+
+  Future<List<CartUserModel>> getByFieldWithCheckIsPaid(
+    String field,
+    String value,
+    bool ispaid,
+  ) async {
+    try {
+      final response = await dio.get(
+        apiLink,
+        queryParameters: {
+          'q': jsonEncode({field: value})
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data as List<dynamic>;
+        final carts = <CartUserModel>[];
+        for (var cardData in data) {
+          CartUserModel cart = CartUserModel.fromJson(cardData);
+          if (cart.isPaid == ispaid) {
+            carts.add(CartUserModel.fromJson(cardData));
+          }
         }
         return carts;
       } else {
@@ -144,6 +181,4 @@ class CartUserRepository {
       rethrow;
     }
   }
-
-  
 }

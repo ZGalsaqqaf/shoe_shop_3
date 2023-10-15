@@ -11,15 +11,15 @@ import '../../myclasses/choose_color_product.dart';
 import '../helper/auth_helper.dart';
 import 'login2.dart';
 
-class ItemPage extends StatefulWidget {
-  const ItemPage({super.key, required this.itemId});
+class ItemEditPage extends StatefulWidget {
+  const ItemEditPage({super.key, required this.itemId});
   final String itemId;
 
   @override
-  State<ItemPage> createState() => _ItemPageState();
+  State<ItemEditPage> createState() => _ItemEditPageState();
 }
 
-class _ItemPageState extends State<ItemPage> {
+class _ItemEditPageState extends State<ItemEditPage> {
   final _formKey = GlobalKey<FormState>();
   String? _selectedColor;
   Color _labelColor = Colors.black;
@@ -289,37 +289,12 @@ class _ItemPageState extends State<ItemPage> {
                                     }
                                   },
                                   child: Text(
-                                    'Add to Cart',
+                                    'Update Product',
                                     style:
                                         Theme.of(context).textTheme.bodyText2,
                                   ),
                                 ),
-                                // ElevatedButton(
-                                //   style: ButtonStyle(
-                                //     backgroundColor:
-                                //         MaterialStateProperty.all<Color>(
-                                //       Theme.of(context).colorScheme.primary,
-                                //     ),
-                                //   ),
-                                //   onPressed: () {
-                                //     if (_formKey.currentState?.validate() ??
-                                //         false) {
-                                //       _formKey.currentState?.save();
-
-                                //       print('Form is valid');
-                                //       print('Selected Color: $_selectedColor');
-                                //       print('Selected Size: $_size');
-                                //       print('Amount of Pieces: $_piecesNumber');
-
-                                //       _showSnackBar(context);
-                                //     }
-                                //   },
-                                //   child: Text(
-                                //     'Add to Cart',
-                                //     style:
-                                //         Theme.of(context).textTheme.bodyText2,
-                                //   ),
-                                // ),
+                                
                               ],
                             ),
                           ),
