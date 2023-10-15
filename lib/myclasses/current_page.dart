@@ -17,7 +17,7 @@ class CurrentPage {
     HomePage(),
     CategoryPage(),
     CartPage(),
-    UserAccount(),
+    // UserAccount(),
   ];
   
   void setPageIndex(int currentPage){

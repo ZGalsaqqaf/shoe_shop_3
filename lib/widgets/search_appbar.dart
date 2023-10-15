@@ -46,6 +46,7 @@ AppBar SearchAppBar(BuildContext context) {
         child: isLoggedIn
             ? GestureDetector(
                 onTap: () {
+                    // print("============ ${AuthenticationProvider.userId} ==========");
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
                     return UserAccount();
@@ -55,7 +56,7 @@ AppBar SearchAppBar(BuildContext context) {
                   backgroundImage: uProfile!.isNotEmpty
                               ? MemoryImage(base64Decode(uProfile))
                                   as ImageProvider<Object>?
-                              : AssetImage("assets/images/shoeshop1.png"),
+                              : AssetImage("assets/images/profiles/profile1.png"),
                 ),
               )
             : GestureDetector(

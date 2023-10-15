@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: CustomCardWithDiscount(
                                 context,
-                                true,
+                                false,
                                 cate.name ?? '',
                                 product.details ?? '',
                                 product.price ?? 0.0,

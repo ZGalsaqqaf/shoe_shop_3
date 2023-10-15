@@ -38,69 +38,94 @@ class _UserAccountState extends State<UserAccount> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
-            } else
-            if (snapshot.hasError) {
+            } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              UserModel thisUser = snapshot.data!;
-              var userId = thisUser.id;
-              var userName = thisUser.username;
-              var userEmail = thisUser.email;
-              var userProfile = thisUser.profile;
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 50.0,
-                      backgroundColor: Colors.black,
-                      backgroundImage: userProfile!.isNotEmpty
-                              ? MemoryImage(base64Decode(userProfile))
-                                  as ImageProvider<Object>?
-                              : AssetImage("assets/images/profiles/profile1.png"),
-                    ),
-                    SizedBox(height: 16.0),
-                    Text(
-                      'Welcome, $userName!',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    SizedBox(height: 16.0),
-                    Text(
-                      'Email: $userEmail',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
-                    SizedBox(height: 16.0),
-                    
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                              .push(MaterialPageRoute(builder: (context) {
-                            return EditAccountPage(userId: userId??'', currentUsername: userName ??'', currentProfileImage: userProfile,);
-                          }));
-                      },
-                      child: Text(
-                        'Edit',
-                        style: Theme.of(context).textTheme.headline5,
+              UserModel? thisUser = snapshot.data!;
+              if (thisUser != null) {
+                var userId = thisUser.id;
+                var userName = thisUser.username;
+                var userEmail = thisUser.email;
+                var userProfile = thisUser.profile;
+
+                return Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: Icon(Icons.refresh),
+                          ),
+                          SizedBox(height: 30.0),
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundColor: Colors.black,
+                            backgroundImage: userProfile != null &&
+                                    userProfile.isNotEmpty
+                                ? MemoryImage(base64Decode(userProfile))
+                                    as ImageProvider<Object>?
+                                : AssetImage("assets/images/profiles/profile1.png"),
+                          ),
+                          SizedBox(height: 16.0),
+                          Text(
+                            'Welcome, $userName!',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                          SizedBox(height: 16.0),
+                          Text(
+                            'Email: $userEmail',
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                          SizedBox(height: 16.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              var isEditProfile = Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return EditAccountPage(
+                                  userId: userId ?? '',
+                                  currentUsername: userName ?? '',
+                                  currentProfileImage: userProfile ?? '',
+                                );
+                              }));
+                                print("====== isEditProfile:  $isEditProfile ======");
+                              if (isEditProfile != null) {
+                                print("hello==========");
+                                setState(() {});
+                              }
+                            },
+                            child: Text(
+                              'Edit',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ),
+                          SizedBox(height: 20.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              AuthenticationProvider.logout();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return HomeBtmNavBarPage();
+                                }),
+                              );
+                            },
+                            child: Text(
+                              'Logout',
+                              style: Theme.of(context).textTheme.headline5,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        AuthenticationProvider.logout();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) {
-                            return HomeBtmNavBarPage();
-                          }),
-                        );
-                      },
-                      child: Text(
-                        'Logout',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
+              } else {
+                return Text("User is empty!");
+              }
             } else {
               return Text('No thisProduct found');
             }

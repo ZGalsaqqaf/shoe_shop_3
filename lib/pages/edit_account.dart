@@ -75,88 +75,98 @@ class _EditAccountPageState extends State<EditAccountPage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData) {
-              UserModel thisUser = snapshot.data!;
-              var userId = thisUser.id;
-              var userName = thisUser.username;
-              var userEmail = thisUser.email;
-              var userProfile = thisUser.profile;
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        CircleAvatar(
-                          radius: 50.0,
-                          backgroundColor: Colors.black,
-                          backgroundImage: userProfile!.isNotEmpty
-                              ? MemoryImage(base64Decode(userProfile))
-                                  as ImageProvider<Object>?
-                              : AssetImage("assets/images/profiles/profile1.png"),
-                        ),
-                        SizedBox(height: 16.0),
-                        ElevatedButton(
-                          onPressed: _selectImage,
-                          child: Text('Select Profile Picture'),
-                        ),
-                        SizedBox(height: 16.0),
-                        TextFormField(
-                          readOnly: true,
-                          controller: _imgController,
-                          decoration: InputDecoration(
-                            hintText: 'Select profile picture',
-                            hintStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+              UserModel? thisUser = snapshot.data!;
+              if (thisUser != null) {
+                var userId = thisUser.id;
+                var userName = thisUser.username;
+                var userEmail = thisUser.email;
+                var userProfile = thisUser.profile;
+                return ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundColor: Colors.black,
+                            backgroundImage: _imgController.text != null &&
+                                    _imgController.text.isNotEmpty
+                                ? MemoryImage(base64Decode(_imgController.text))
+                                    as ImageProvider<Object>?
+                                : userProfile != null && userProfile.isNotEmpty
+                                    ? MemoryImage(base64Decode(userProfile))
+                                        as ImageProvider<Object>?
+                                    : AssetImage(
+                                        "assets/images/profiles/profile1.png"),
+                          ),
+                          SizedBox(height: 16.0),
+                          ElevatedButton(
+                            onPressed: _selectImage,
+                            child: Text('Select Profile Picture'),
+                          ),
+                          SizedBox(height: 16.0),
+                          TextFormField(
+                            readOnly: true,
+                            controller: _imgController,
+                            decoration: InputDecoration(
+                              hintText: 'Select profile picture',
+                              hintStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              contentPadding: EdgeInsets.only(left: 60.0),
                             ),
-                            contentPadding: EdgeInsets.only(left: 60.0),
                           ),
-                        ),
-                        SizedBox(height: 16.0),
-                        TextField(
-                          controller: _usernameController,
-                          decoration: InputDecoration(
-                            labelText: 'Username',
+                          SizedBox(height: 16.0),
+                          TextField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              labelText: 'Username',
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 16.0),
-                        ElevatedButton(
-                          onPressed: () async {
-                            String newUsername = _usernameController.text;
+                          SizedBox(height: 16.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              String newUsername = _usernameController.text;
 
-                            print('====${_imgController.text}');
+                              print('====${_imgController.text}');
 
-                            UserModel user = UserModel(
-                              username: _usernameController.text,
-                              email: thisUser.email,
-                              password: thisUser.password,
-                              profile: _imgController.text,
-                            );
-                            try {
-                              UserModel addedUser = await users.updateUser(
-                                  thisUser.id ?? '', user);
-                              print(
-                                  'User updated successfully: ${addedUser.username}');
-                              setState(() {
-                                AuthenticationProvider.userName =
-                                    _usernameController.text;
-                                AuthenticationProvider.userProfile = _imgController.text;
-                              });
-                            } catch (e) {
-                              print('Failed to update user: $e');
-                            }
+                              UserModel user = UserModel(
+                                username: _usernameController.text,
+                                email: thisUser.email,
+                                password: thisUser.password,
+                                profile: _imgController.text,
+                              );
+                              try {
+                                UserModel addedUser = await users.updateUser(
+                                    thisUser.id ?? '', user);
+                                print(
+                                    'User updated successfully: ${addedUser.username}');
+                                setState(() {
+                                  AuthenticationProvider.userName =
+                                      _usernameController.text;
+                                  AuthenticationProvider.userProfile =
+                                      _imgController.text;
+                                });
+                                Navigator.of(context).pop(true);
+                              } catch (e) {
+                                print('Failed to update user: $e');
+                              }
 
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Save'),
-                        ),
-                      ],
+                            },
+                            child: Text('Save'),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              } else {
+                return Text("User is empty!");
+              }
             } else {
               return Text('No thisProduct found');
             }
