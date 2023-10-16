@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/helper/auth_helper.dart';
-import 'package:shoe_shop_3/pages/cart_delete.dart';
 import 'package:shoe_shop_3/pages/item_edit.dart';
 import 'package:shoe_shop_3/reops/cart_user_repo.dart';
 
@@ -9,6 +8,7 @@ import '../../widgets/search_appbar.dart';
 import '../models/cart_user_model.dart';
 import '../models/product_model.dart';
 import '../reops/product_repo.dart';
+
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -20,6 +20,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   IconData appModeIcon = Icons.sunny;
   double totalPrice = 0;
+  
 
   void updateAppModeIcon(IconData newIcon) {
     setState(() {
@@ -27,22 +28,11 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  Future<List<CartUserModel>> _fetchCartData() async {
-    return await CartUserRepository().getByFieldWithCheckIsPaid(
-      "User_id",
-      AuthenticationProvider.userId ?? '',
-      false,
-    );
+  void updateTotalPrice(double price) {
+    setState(() {
+      totalPrice += price; // Update the totalPrice
+    });
   }
-
-  GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
-
-      void refreshCartPage() {
-  setState(() {
-    _cardData = _fetchCartData(); // Fetch the updated cart data
-  });
-}
 
   Future<List<CartUserModel>>? _cardData;
 
@@ -54,7 +44,8 @@ class _CartPageState extends State<CartPage> {
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: Container(
         child: FutureBuilder<List<CartUserModel>>(
-          future: _cardData,
+          future: CartUserRepository().getByFieldWithCheckIsPaid(
+              "User_id", AuthenticationProvider.userId ?? '', false),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -65,28 +56,24 @@ class _CartPageState extends State<CartPage> {
               }
               var items = snapshot.data ?? [];
               return RefreshIndicator(
-                key: _refreshIndicatorKey,
                 onRefresh: () async {
-                  setState(() {
-                    _cardData = _fetchCartData(); // Fetch the updated cart data
-                  });
+                  setState(() {});
                 },
-                child: ListView.builder(
-                  itemCount: items.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return CartItemWidget(
-                      cartItem: items[index],
-                      refreshCartPage: refreshCartPage,
-                    );
-                    // return Column(
-                    //   children: [
-                    //     Text("${items[index].userId}"),
-                    //     Text("${items[index].prodId}"),
-                    //     Text("${items[index].color}"),
-                    //   ],
-                    // );
-                  },
-                ),
+                child: items.isEmpty
+                    ? Center(child: Text("No Data"))
+                    : ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return CartItemWidget(cartItem: items[index]);
+                          // return Column(
+                          //   children: [
+                          //     Text("${items[index].userId}"),
+                          //     Text("${items[index].prodId}"),
+                          //     Text("${items[index].color}"),
+                          //   ],
+                          // );
+                        },
+                      ),
               );
             } else {
               return Center(
@@ -127,12 +114,8 @@ class _CartPageState extends State<CartPage> {
 
 class CartItemWidget extends StatefulWidget {
   final CartUserModel cartItem;
-  final VoidCallback refreshCartPage;
 
-  const CartItemWidget({
-    required this.cartItem,
-    required this.refreshCartPage,
-  });
+  const CartItemWidget({required this.cartItem});
 
   @override
   _CartItemWidgetState createState() => _CartItemWidgetState();
@@ -140,7 +123,6 @@ class CartItemWidget extends StatefulWidget {
 
 class _CartItemWidgetState extends State<CartItemWidget> {
   late Future<ProductShoeModel?> _productData;
-  double totalPrice = 0;
 
   @override
   void initState() {
@@ -150,6 +132,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double totalPrice = 0;
+
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Padding(
@@ -214,7 +198,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         var quantity = widget.cartItem.numPieces;
                         var total = prodPrice! * quantity!;
 
-                        totalPrice = totalPrice + total;
+                        totalPrice += total;
 
                         return GestureDetector(
                           onTap: () {
@@ -258,15 +242,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () async {
-                await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return CartDelete(
-                        itemId: widget.cartItem.id ?? '',
-                      );
-                    });
-                widget.refreshCartPage(); // Refresh the cart page
+              onPressed: () {
+                // Implement the remove item functionality
               },
             ),
           ],

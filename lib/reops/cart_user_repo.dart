@@ -181,4 +181,33 @@ class CartUserRepository {
       rethrow;
     }
   }
+
+  Future<int> deleteCart(String id) async {
+    try {
+      final response = await dio.delete(
+        '$apiLink/$id',
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print('Cart deleted successfully');
+        return 1;
+      } else if (response.statusCode == 404) {
+        print('Cart not found');
+        return 0;
+        // throw Exception('Cart not found');
+      } else {
+        print('Failed to delete cart');
+        return -1;
+        // throw Exception('Failed to delete cart');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

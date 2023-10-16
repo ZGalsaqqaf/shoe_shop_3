@@ -209,8 +209,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
                                     ),
                                   ),
                                   onPressed: () async{
-                                    if (AuthenticationProvider
-                                        .isLoggedIn.value) {
+                                    
                                       // User is logged in, allow adding to cart
                                       if (_formKey.currentState?.validate() ??
                                           false) {
@@ -244,49 +243,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
 
                                         _showSnackBar(context);
                                       }
-                                    } else {
-                                      // User is not logged in, show alert to go and login first
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Login Required'),
-                                            content: Text(
-                                                'Please login first to add items to the cart.'),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                child: Text('Cancel'),
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text('OK'),
-                                                onPressed: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) {
-                                                      return LoginPage2(
-                                                        email: "",
-                                                        password: "",
-                                                        redirectPage: 'pop',
-                                                      );
-                                                    }),
-                                                  ).then((_) {
-                                                    setState(() {
-                                                      // Refresh the user account page here
-                                                    });
-                                                  });
-                                                  // Redirect to the login page or perform any other action
-                                                  // to handle the login process.
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
+                                    
                                   },
                                   child: Text(
                                     'Update Product',
