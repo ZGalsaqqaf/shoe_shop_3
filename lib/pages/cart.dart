@@ -19,10 +19,18 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   IconData appModeIcon = Icons.sunny;
+  double totalPrice = 0;
+  
 
   void updateAppModeIcon(IconData newIcon) {
     setState(() {
       appModeIcon = newIcon;
+    });
+  }
+
+  void updateTotalPrice(double price) {
+    setState(() {
+      totalPrice += price; // Update the totalPrice
     });
   }
 
@@ -82,7 +90,7 @@ class _CartPageState extends State<CartPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Total: \$"',
+              'Total: \$${totalPrice.toStringAsFixed(2)}',
               style: Theme.of(context).textTheme.bodyText1,
             ),
             ElevatedButton(
