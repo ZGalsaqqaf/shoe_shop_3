@@ -95,7 +95,7 @@ Widget CustomDrawerWithAppMode(
           Divider(),
           ListTile(
             leading: Icon(
-              Icons.shopping_cart,
+              Icons.shopping_basket,
               color: Theme.of(context).colorScheme.tertiary,
             ),
             title: Text(

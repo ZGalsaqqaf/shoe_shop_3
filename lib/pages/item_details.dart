@@ -35,6 +35,13 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
 
   CartUserRepository carts = CartUserRepository();
 
+  String formattedDate(){
+    DateTime dateTime = DateTime.parse(widget.cardItem.date??'');
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDate;
+  }
+
+
   Widget itemShow(String desc, String value) {
     return Row(
       children: [
@@ -101,6 +108,13 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
                           productImage: prodImage ?? '',
                         ),
                         SizedBox(height: 10.0),
+                        Text("Date of adding: ${formattedDate()}", style: TextStyle(color: Colors.grey),),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Divider(
+                            color: Colors.grey,
+                          ),
+                        ),
                         Text(
                           '$prodName',
                           style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/helper/auth_helper.dart';
 import 'package:shoe_shop_3/pages/item_edit.dart';
+import 'package:shoe_shop_3/pages/purchases.dart';
 import 'package:shoe_shop_3/reops/cart_user_repo.dart';
 
 import '../../widgets/custom_drawer_app_mode.dart';
@@ -191,39 +192,42 @@ class _CartPageState extends State<CartPage> {
         ),
       ),
       bottomNavigationBar: Container(
-  padding: EdgeInsets.all(16.0),
-  color: Theme.of(context).colorScheme.secondary,
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        'Total: \$${totalPrice.toStringAsFixed(2)}',
-        style: Theme.of(context).textTheme.bodyText1,
-      ),
-      ElevatedButton(
-        onPressed: () async {
-          // Call the getUnpaidItems method
-          try {
-            List<CartUserModel> unpaidItems = await _cards.getUnpaidItems(AuthenticationProvider.userId??'');
-            setState(() {
-              
-            });
-            
-            // Perform additional actions with the unpaidItems if needed
-            
-            // Display a success message or navigate to a new screen
-          } catch (e) {
-            // Handle any errors that occur during the process
-          }
-        },
-        child: Text(
-          'Checkout',
-          style: Theme.of(context).textTheme.headline5,
+        padding: EdgeInsets.all(16.0),
+        color: Theme.of(context).colorScheme.secondary,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Total: \$${totalPrice.toStringAsFixed(2)}',
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                // Call the getUnpaidItems method
+                try {
+                  List<CartUserModel> unpaidItems = await _cards
+                      .getUnpaidItems(AuthenticationProvider.userId ?? '');
+                  setState(() {});
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) {
+                      return PurchasesPage();
+                    }),
+                  );
+                  // Perform additional actions with the unpaidItems if needed
+
+                  // Display a success message or navigate to a new screen
+                } catch (e) {
+                  // Handle any errors that occur during the process
+                }
+              },
+              child: Text(
+                'Checkout',
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
+          ],
         ),
       ),
-    ],
-  ),
-),
     );
   }
 }

@@ -47,12 +47,18 @@ class _UpdateCartItemState extends State<UpdateCartItem> {
     _sizeController.text = widget.cardItem.size.toString();
   }
 
+  String formattedDate(){
+    DateTime dateTime = DateTime.parse(widget.cardItem.date??'');
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Text('Shopping Cart'),
+        title: Text('Edit Cart'),
       ),
       body: Container(
         padding: EdgeInsets.all(16),
@@ -87,6 +93,13 @@ class _UpdateCartItemState extends State<UpdateCartItem> {
                           productImage: prodImage ?? '',
                         ),
                         SizedBox(height: 10.0),
+                        Text("Date of adding: ${formattedDate()}", style: TextStyle(color: Colors.grey),),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Divider(
+                            color: Colors.grey,
+                          ),
+                        ),
                         Text(
                           '$prodName for ${audience.name}',
                           style: Theme.of(context).textTheme.headline1,
@@ -239,16 +252,15 @@ class _UpdateCartItemState extends State<UpdateCartItem> {
                                     );
                                     String? cId = widget.cardItem.id;
                                     try {
-                                      CartUserModel addCart =
-                                          (await carts.updateCart(cId??'', _cart)) as CartUserModel;
+                                      CartUserModel addCart = (await carts
+                                              .updateCart(cId ?? '', _cart))
+                                          as CartUserModel;
                                       print(
                                           'User updated successfully! userId:${AuthenticationProvider.userId}');
                                     } catch (e) {
                                       print("Faild to update cart: $e");
                                     }
-                                    setState(() {
-                                      
-                                    });
+                                    setState(() {});
 
                                     Navigator.of(context).pop();
 
