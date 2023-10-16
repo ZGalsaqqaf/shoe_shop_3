@@ -148,11 +148,14 @@ class _LoginPage2State extends State<LoginPage2> {
                           var userName = users[0].username;
                           var userEmail = users[0].email;
                           var userProfile = users[0].profile;
+                          var userCreditCard = users[0].creditCard;
                           AuthenticationProvider.login(
                               userId ?? '',
                               userName ?? '',
                               userEmail ?? '',
-                              userProfile ?? '');
+                              userProfile ?? '',
+                              userCreditCard??'',
+                              );
                           if (widget.redirectPage == 'home' || widget.redirectPage == '') {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(builder: (context) {

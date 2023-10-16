@@ -9,6 +9,7 @@ import '../../widgets/search_appbar.dart';
 import '../models/cart_user_model.dart';
 import '../models/product_model.dart';
 import '../reops/product_repo.dart';
+import 'add_creditcart_number.dart';
 import 'cart_delete.dart';
 
 class CartPage extends StatefulWidget {
@@ -203,21 +204,63 @@ class _CartPageState extends State<CartPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // Call the getUnpaidItems method
-                try {
-                  List<CartUserModel> unpaidItems = await _cards
-                      .getUnpaidItems(AuthenticationProvider.userId ?? '');
-                  setState(() {});
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
-                      return PurchasesPage();
-                    }),
+                if (AuthenticationProvider.userCreditCard != null &&
+                    AuthenticationProvider.userCreditCard != '') {
+                  try {
+                    print("credit : ${AuthenticationProvider.userCreditCard}");
+                    List<CartUserModel> unpaidItems = await _cards
+                        .getUnpaidItems(AuthenticationProvider.userId ?? '');
+                    setState(() {});
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) {
+                        return PurchasesPage();
+                      }),
+                    );
+                  } catch (e) {
+                    print("Error accours: $e");
+                  }
+                } else {
+                  print("No Credit Card");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          'Credit Card Required',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        content: Text(
+                            "We don't have your credit card \nPlease Add it first to buy your purchases."),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                          ),
+                          TextButton(
+                            child: Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) {
+                                  return AddCreditCardNumber(
+                                    userId: AuthenticationProvider.userId ?? '',
+                                  );
+                                }),
+                              ).then((_) {
+                                setState(() {
+                                  // Refresh the user account page here
+                                });
+                              });
+                              // Redirect to the login page or perform any other action
+                              // to handle the login process.
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   );
-                  // Perform additional actions with the unpaidItems if needed
-
-                  // Display a success message or navigate to a new screen
-                } catch (e) {
-                  // Handle any errors that occur during the process
                 }
               },
               child: Text(

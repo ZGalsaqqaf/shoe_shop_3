@@ -199,6 +199,32 @@ class UserRepository {
     }
   }
 
+  Future<bool> isValueExists(String field, String value) async {
+    try {
+      final response = await dio.get(
+        apiLink,
+        queryParameters: {
+          'q': jsonEncode({'$field': value})
+        },
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data as List<dynamic>;
+        return data.isNotEmpty;
+      } else {
+        throw Exception('Failed to check email existence');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<bool> authenticateUser(String email, String password) async {
     try {
     final response = await dio.get(
@@ -224,4 +250,30 @@ class UserRepository {
     rethrow;
   }
   }
+
+  Future<UserModel> updateOneField(String id, String field, String value) async {
+  try {
+    final response = await dio.put(
+      '$apiLink/$id',
+      data: {
+        '$field': value,
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      var data = response.data as Map<String, dynamic>;
+      return UserModel.fromJson(data);
+    } else {
+      throw Exception('Failed to update user');
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
 }

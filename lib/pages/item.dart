@@ -208,7 +208,7 @@ class _ItemPageState extends State<ItemPage> {
                                       Theme.of(context).colorScheme.primary,
                                     ),
                                   ),
-                                  onPressed: () async{
+                                  onPressed: () async {
                                     if (AuthenticationProvider
                                         .isLoggedIn.value) {
                                       // User is logged in, allow adding to cart
@@ -229,8 +229,10 @@ class _ItemPageState extends State<ItemPage> {
                                           isPaid: false,
                                         );
                                         try {
-                                          CartUserModel addCart = await carts.addCart(_cart);
-                                          print('User added successfully! userId:${AuthenticationProvider.userId}');
+                                          CartUserModel addCart =
+                                              await carts.addCart(_cart);
+                                          print(
+                                              'User added successfully! userId:${AuthenticationProvider.userId}');
                                         } catch (e) {
                                           print("Faild to add cart: $e");
                                         }
@@ -250,7 +252,13 @@ class _ItemPageState extends State<ItemPage> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text('Login Required'),
+                                            title: Text(
+                                              'Login Required',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                            ),
                                             content: Text(
                                                 'Please login first to add items to the cart.'),
                                             actions: <Widget>[

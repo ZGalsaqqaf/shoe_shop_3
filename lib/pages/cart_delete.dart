@@ -3,11 +3,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:shoe_shop_3/reops/cart_user_repo.dart';
 
-
 class CartDelete extends StatefulWidget {
   const CartDelete({Key? key, required this.itemId}) : super(key: key);
   final String itemId;
-  
 
   @override
   State<CartDelete> createState() => _CartDeleteState();
@@ -34,7 +32,13 @@ class _CartDeleteState extends State<CartDelete> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            loading ? CircularProgressIndicator() : Text(txtConfirm),
+            loading
+                ? CircularProgressIndicator()
+                : Text(
+                    txtConfirm,
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
             isError
                 ? Text(
                     "Error: $errorMsg",
@@ -46,6 +50,12 @@ class _CartDeleteState extends State<CartDelete> {
                   ),
             Row(
               children: [
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text("No"),
+                ),
                 TextButton(
                   onPressed: () async {
                     try {
@@ -80,12 +90,6 @@ class _CartDeleteState extends State<CartDelete> {
                     }
                   },
                   child: Text("Yes"),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    Navigator.of(context).pop(false);
-                  },
-                  child: Text("No"),
                 ),
               ],
             ),

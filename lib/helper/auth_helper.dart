@@ -7,13 +7,15 @@ class AuthenticationProvider {
   static String? userName;
   static String? userEmail;
   static String? userProfile;
+  static String? userCreditCard;
 
-  static void login(String id, String name, String email, String profile) {
+  static void login(String id, String name, String email, String profile, String creditCard) {
     isLoggedIn.value = true;
     userId = id;
     userName = name;
     userEmail = email;
     userProfile = profile;
+    userCreditCard = creditCard;
   }
 
   static void logout() {
