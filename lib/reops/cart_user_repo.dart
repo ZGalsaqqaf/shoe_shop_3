@@ -158,7 +158,7 @@ class CartUserRepository {
     }
   }
 
-  Future<CartUserModel> updateCart(String id, CartUserModel cart) async {
+  Future<int> updateCart(String id, CartUserModel cart) async {
     try {
       final response = await dio.put(
         '$apiLink/$id',
@@ -173,7 +173,7 @@ class CartUserRepository {
 
       if (response.statusCode == 200) {
         var data = response.data as Map<String, dynamic>;
-        return CartUserModel.fromJson(data);
+        return 1;
       } else {
         throw Exception('Failed to update user');
       }

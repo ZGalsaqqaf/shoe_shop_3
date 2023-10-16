@@ -218,11 +218,11 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 
                         return GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return ItemEditPage(itemId: product.id ?? '');
-                              }),
-                            );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(builder: (context) {
+                            //     return UpdateCartItem(prodId: product.id ?? '');
+                            //   }),
+                            // );
                           },
                           child: Column(
                             children: [

@@ -114,11 +114,16 @@ class _CartPageState extends State<CartPage> {
                                                   Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) {
-                                                      return ItemEditPage(
-                                                          itemId:
-                                                              product.id ?? '');
+                                                      return UpdateCartItem(
+                                                        prodId:
+                                                            product.id ?? '',
+                                                        cardItem: items[index],
+                                                      );
                                                     }),
-                                                  );
+                                                  ).then((_) {
+                                                    setState(() {});
+                                                  });
+                                                  ;
                                                 },
                                                 child: Column(
                                                   children: [
