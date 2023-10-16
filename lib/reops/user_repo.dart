@@ -276,4 +276,37 @@ class UserRepository {
     rethrow;
   }
 }
+
+Future<bool> isValueExistsOnAnotherId(String id, String field, String value) async {
+  try {
+    final response = await dio.get(
+      apiLink,
+      queryParameters: {
+        'q': jsonEncode({
+          '$field': value,
+        })
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      for (var item in data) {
+        if (item['_id'] != id) {
+          return true;
+        }
+      }
+      return false;
+    } else {
+      throw Exception('Failed to check existence');
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
 }

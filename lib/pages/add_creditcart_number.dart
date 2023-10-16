@@ -98,7 +98,10 @@ class _AddCreditCardNumberState extends State<AddCreditCardNumber> {
                   print(
                       "userId: ${widget.userId}, creditCard: ${_creditCardController.text}");
                 } else {
-                  _isCreditCardExist = true;
+                  setState(() {
+                    _isCreditCardExist = true;
+                  });
+                  print('Repeated cridet:');
                 }
               } else {
                 // Form is invalid, display error message

@@ -26,6 +26,7 @@ class EditAccountPage extends StatefulWidget {
 
 class _EditAccountPageState extends State<EditAccountPage> {
   TextEditingController _usernameController = TextEditingController();
+  TextEditingController _creditCardController = TextEditingController();
   var _imgController = TextEditingController();
 
   var _selectedImageBytes;
@@ -49,6 +50,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
     super.initState();
     _usernameController.text = widget.currentUsername;
     _imgController.text = widget.currentProfileImage;
+    _creditCardController.text = AuthenticationProvider.userCreditCard ?? '';
   }
 
   @override
@@ -57,7 +59,11 @@ class _EditAccountPageState extends State<EditAccountPage> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   UserRepository users = UserRepository();
+  bool _isUserNameExist = false;
+  bool _isCreditCardExist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -85,81 +91,145 @@ class _EditAccountPageState extends State<EditAccountPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CircleAvatar(
-                            radius: 50.0,
-                            backgroundColor: Colors.black,
-                            backgroundImage: _imgController.text != null &&
-                                    _imgController.text.isNotEmpty
-                                ? MemoryImage(base64Decode(_imgController.text))
-                                    as ImageProvider<Object>?
-                                : userProfile != null && userProfile.isNotEmpty
-                                    ? MemoryImage(base64Decode(userProfile))
-                                        as ImageProvider<Object>?
-                                    : AssetImage(
-                                        "assets/images/profiles/profile1.png"),
-                          ),
-                          SizedBox(height: 16.0),
-                          ElevatedButton(
-                            onPressed: _selectImage,
-                            child: Text('Select Profile Picture'),
-                          ),
-                          SizedBox(height: 16.0),
-                          TextFormField(
-                            readOnly: true,
-                            controller: _imgController,
-                            decoration: InputDecoration(
-                              hintText: 'Select profile picture',
-                              hintStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: Colors.black,
+                              backgroundImage: _imgController.text != null &&
+                                      _imgController.text.isNotEmpty
+                                  ? MemoryImage(base64Decode(_imgController.text))
+                                      as ImageProvider<Object>?
+                                  : userProfile != null && userProfile.isNotEmpty
+                                      ? MemoryImage(base64Decode(userProfile))
+                                          as ImageProvider<Object>?
+                                      : AssetImage(
+                                          "assets/images/profiles/profile1.png"),
+                            ),
+                            SizedBox(height: 16.0),
+                            ElevatedButton(
+                              onPressed: _selectImage,
+                              child: Text('Select Profile Picture'),
+                            ),
+                            SizedBox(height: 16.0),
+                            TextFormField(
+                              readOnly: true,
+                              controller: _imgController,
+                              decoration: InputDecoration(
+                                hintText: 'Select profile picture',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                contentPadding: EdgeInsets.only(left: 60.0),
                               ),
-                              contentPadding: EdgeInsets.only(left: 60.0),
                             ),
-                          ),
-                          SizedBox(height: 16.0),
-                          TextField(
-                            controller: _usernameController,
-                            decoration: InputDecoration(
-                              labelText: 'Username',
+                            SizedBox(height: 16.0),
+                            TextFormField(
+                              // key: _formKey,
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                labelText: 'Username',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Username can not be empty';
+                                }
+                                if (value.length < 3) {
+                                  return 'Must be at least 3 characters';
+                                }
+                                return null;
+                              },
                             ),
-                          ),
-                          SizedBox(height: 16.0),
-                          ElevatedButton(
-                            onPressed: () async {
-                              String newUsername = _usernameController.text;
-
-                              print('====${_imgController.text}');
-
-                              UserModel user = UserModel(
-                                username: _usernameController.text,
-                                email: thisUser.email,
-                                password: thisUser.password,
-                                profile: _imgController.text,
-                              );
-                              try {
-                                UserModel addedUser = await users.updateUser(
-                                    thisUser.id ?? '', user);
-                                print(
-                                    'User updated successfully: ${addedUser.username}');
-                                setState(() {
-                                  AuthenticationProvider.userName =
-                                      _usernameController.text;
-                                  AuthenticationProvider.userProfile =
-                                      _imgController.text;
-                                });
-                                Navigator.of(context).pop(true);
-                              } catch (e) {
-                                print('Failed to update user: $e');
-                              }
-
-                            },
-                            child: Text('Save'),
-                          ),
-                        ],
+                            SizedBox(height: 16.0),
+                            TextFormField(
+                              controller: _creditCardController,
+                              decoration: InputDecoration(
+                                labelText: 'Credit Card',
+                              ),
+                            ),
+                            SizedBox(height: 16.0),
+                            ElevatedButton(
+                              onPressed: () async {
+                                String newUsername = _usernameController.text;
+                                String newCreditCard = _creditCardController.text;
+                      
+                                print('====${_imgController.text}');
+                                if (_formKey.currentState?.validate() ?? false) {
+                                  bool isUserNameExist =
+                                      await users.isValueExistsOnAnotherId(
+                                          thisUser.id ?? '',
+                                          'Username',
+                                          _usernameController.text);
+                                  bool isCreditCardExist =
+                                      await users.isValueExistsOnAnotherId(
+                                          thisUser.id ?? '',
+                                          'CreditCard',
+                                          _creditCardController.text);
+                                  if (_isUserNameExist) {
+                                    setState(() {
+                                      _isUserNameExist = true;
+                                    });
+                                    return;
+                                  }
+                                  if (_isCreditCardExist) {
+                                    setState(() {
+                                      _isCreditCardExist = true;
+                                    });
+                                    return;
+                                  }
+                      
+                                  UserModel user = UserModel(
+                                    username: _usernameController.text,
+                                    email: thisUser.email,
+                                    password: thisUser.password,
+                                    profile: _imgController.text,
+                                    creditCard: _creditCardController.text,
+                                  );
+                                  try {
+                                    UserModel addedUser = await users.updateUser(
+                                        thisUser.id ?? '', user);
+                                    print(
+                                        'User updated successfully: ${addedUser.username}');
+                                    setState(() {
+                                      AuthenticationProvider.userName =
+                                          _usernameController.text;
+                                      AuthenticationProvider.userProfile =
+                                          _imgController.text;
+                                      _isUserNameExist = false;
+                                      _isCreditCardExist = false;
+                                    });
+                                    Navigator.of(context).pop(true);
+                                  } catch (e) {
+                                    print('Failed to update user: $e');
+                                  }
+                                }else{
+                                  print("Form is invalid");
+                                }
+                              },
+                              child: Text('Save'),
+                            ),
+                            _isUserNameExist
+                                ? Center(
+                                    child: Text(
+                                      "This Username Already Exists",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  )
+                                : _isCreditCardExist
+                                    ? Center(
+                                        child: Text(
+                                          "Email is Already Exists",
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                      )
+                                    : Text(""),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -168,7 +238,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                 return Text("User is empty!");
               }
             } else {
-              return Text('No thisProduct found');
+              return Text('No User found');
             }
           },
         ),
