@@ -8,6 +8,7 @@ import 'package:shoe_shop_3/myclasses/category_class.dart';
 import 'package:shoe_shop_3/pages/about.dart';
 import 'package:shoe_shop_3/pages/account.dart';
 import 'package:shoe_shop_3/pages/cart.dart';
+import 'package:shoe_shop_3/pages/purchases.dart';
 import 'package:shoe_shop_3/reops/user_repo.dart';
 import 'package:shoe_shop_3/theme/theme_provider.dart';
 
@@ -88,6 +89,23 @@ Widget CustomDrawerWithAppMode(
               // Handle Home navigation
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return CartPage();
+              }));
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.shopping_cart,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            title: Text(
+              'My Purchases',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            onTap: () {
+              // Handle Home navigation
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return PurchasesPage();
               }));
             },
           ),
