@@ -59,7 +59,7 @@ class _CartPageState extends State<CartPage> {
                   });
                 },
                 child: items.isEmpty
-                    ? Center(child: Text("No Data"))
+                    ? Center(child: Text("Your Cart Is Empty"))
                     : ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
