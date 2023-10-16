@@ -29,6 +29,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   Future<List<CartUserModel>>? _cardData;
+  CartUserRepository _cards = CartUserRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -190,27 +191,39 @@ class _CartPageState extends State<CartPage> {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16.0),
-        color: Theme.of(context).colorScheme.secondary,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Total: \$${totalPrice.toStringAsFixed(2)}',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Implement the checkout functionality
-              },
-              child: Text(
-                'Checkout',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-          ],
+  padding: EdgeInsets.all(16.0),
+  color: Theme.of(context).colorScheme.secondary,
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        'Total: \$${totalPrice.toStringAsFixed(2)}',
+        style: Theme.of(context).textTheme.bodyText1,
+      ),
+      ElevatedButton(
+        onPressed: () async {
+          // Call the getUnpaidItems method
+          try {
+            List<CartUserModel> unpaidItems = await _cards.getUnpaidItems(AuthenticationProvider.userId??'');
+            setState(() {
+              
+            });
+            
+            // Perform additional actions with the unpaidItems if needed
+            
+            // Display a success message or navigate to a new screen
+          } catch (e) {
+            // Handle any errors that occur during the process
+          }
+        },
+        child: Text(
+          'Checkout',
+          style: Theme.of(context).textTheme.headline5,
         ),
       ),
+    ],
+  ),
+),
     );
   }
 }

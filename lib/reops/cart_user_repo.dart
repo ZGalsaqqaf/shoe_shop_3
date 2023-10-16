@@ -132,7 +132,7 @@ class CartUserRepository {
     } catch (e) {
       rethrow;
     }
-  } // end getByField
+  } // end getByFieldWithCheckIsPaid
 
   Future<CartUserModel> addCart(CartUserModel cart) async {
     try {
@@ -209,5 +209,80 @@ class CartUserRepository {
     } catch (e) {
       rethrow;
     }
+  } // end deleteCart
+
+  Future<List<CartUserModel>> getUnpaidItems(String userId) async {
+  try {
+    final response = await dio.get(
+      apiLink,
+      queryParameters: {
+        'q': jsonEncode({'User_id': userId, 'IsPaid': false})
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      final unpaidItems = <CartUserModel>[];
+      for (var itemData in data) {
+        unpaidItems.add(CartUserModel.fromJson(itemData));
+      }
+
+      // Update the isPaid field of the retrieved items to true
+      for (var item in unpaidItems) {
+        item.isPaid = true;
+        await updateCart(item.id ?? '', item);
+      }
+
+      return unpaidItems;
+    } else {
+      throw Exception('Failed to fetch unpaid items');
+    }
+  } catch (e) {
+    rethrow;
   }
+}
+
+  // Future<List<CartUserModel>> getUnpaidItems() async {
+  //   try {
+  //     final response = await dio.get(
+  //       apiLink,
+  //       queryParameters: {
+  //         'q': jsonEncode({'isPaid': false})
+  //       },
+  //       options: Options(
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'x-apikey': apiKey,
+  //         },
+  //       ),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final data = response.data as List<dynamic>;
+  //       final unpaidItems = <CartUserModel>[];
+  //       for (var itemData in data) {
+  //         unpaidItems.add(CartUserModel.fromJson(itemData));
+  //       }
+
+  //       // Update the isPaid field of the retrieved items to true
+  //       for (var item in unpaidItems) {
+  //         item.isPaid = true;
+  //         await updateCart(item.id??'', item);
+  //       }
+
+  //       return unpaidItems;
+  //     } else {
+  //       throw Exception('Failed to fetch unpaid items');
+  //     }
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
+
 }
