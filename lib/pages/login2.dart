@@ -6,6 +6,7 @@ import '../models/user_model.dart';
 import '../pages/regester.dart';
 import '../widgets/custom_input_decoration.dart';
 import 'fake_pages.dart';
+import 'forget_password.dart';
 
 class LoginPage2 extends StatefulWidget {
   const LoginPage2({
@@ -150,13 +151,14 @@ class _LoginPage2State extends State<LoginPage2> {
                           var userProfile = users[0].profile;
                           var userCreditCard = users[0].creditCard;
                           AuthenticationProvider.login(
-                              userId ?? '',
-                              userName ?? '',
-                              userEmail ?? '',
-                              userProfile ?? '',
-                              userCreditCard??'',
-                              );
-                          if (widget.redirectPage == 'home' || widget.redirectPage == '') {
+                            userId ?? '',
+                            userName ?? '',
+                            userEmail ?? '',
+                            userProfile ?? '',
+                            userCreditCard ?? '',
+                          );
+                          if (widget.redirectPage == 'home' ||
+                              widget.redirectPage == '') {
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(builder: (context) {
                                 return HomeBtmNavBarPage();
@@ -184,7 +186,26 @@ class _LoginPage2State extends State<LoginPage2> {
                       style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return ForgetPassword();
+                          }));
+                        },
+                        child: Text(
+                          "Forget Password ?",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  // SizedBox(height: 3.0),
                   _isAuthenticated
                       ? Center(
                           child: Text(
@@ -193,7 +214,8 @@ class _LoginPage2State extends State<LoginPage2> {
                           ),
                         )
                       : Text(""),
-                  SizedBox(height: 10.0),
+                  // SizedBox(height: 3.0),
+                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

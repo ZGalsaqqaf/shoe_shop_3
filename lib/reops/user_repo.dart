@@ -309,4 +309,30 @@ Future<bool> isValueExistsOnAnotherId(String id, String field, String value) asy
     rethrow;
   }
 }
+
+Future<bool> UserNameAndEmailCheckMatching(String email, String username) async {
+    try {
+    final response = await dio.get(
+      apiLink,
+      queryParameters: {
+        'q': jsonEncode({'email': email, 'Username': username})
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      return data.isNotEmpty;
+    } else {
+      throw Exception('Failed to check email existence');
+    }
+  } catch (e) {
+    rethrow;
+  }
+  }
 }
