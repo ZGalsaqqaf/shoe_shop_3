@@ -71,6 +71,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   crossAxisCount: 3, // Display three items in each line
                   mainAxisSpacing: 10.0,
                   crossAxisSpacing: 10.0,
+                  childAspectRatio: 0.5,
                 ),
                 padding: EdgeInsets.all(10.0),
                 itemBuilder: (context, index) {

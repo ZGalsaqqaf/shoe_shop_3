@@ -22,12 +22,28 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   IconData appModeIcon = Icons.sunny;
 
-  double totalPrice = 0;
-
   void updateAppModeIcon(IconData newIcon) {
     setState(() {
       appModeIcon = newIcon;
     });
+  }
+
+  Future<double>? totalPrice;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeTotalPrice();
+  }
+
+  Future<void> _initializeTotalPrice() async {
+    totalPrice = _fetchCategoryData();
+  }
+
+  Future<double> _fetchCategoryData() async {
+    final repository = CartUserRepository();
+    return repository
+        .countUnpaidItemsPrice(AuthenticationProvider.userId ?? '');
   }
 
   Future<List<CartUserModel>>? _cardData;
@@ -54,9 +70,7 @@ class _CartPageState extends State<CartPage> {
               var items = snapshot.data ?? [];
               return RefreshIndicator(
                 onRefresh: () async {
-                  setState(() {
-                    totalPrice;
-                  });
+                  setState(() {});
                 },
                 child: items.isEmpty
                     ? Center(child: Text("Your Cart Is Empty"))
@@ -84,8 +98,6 @@ class _CartPageState extends State<CartPage> {
                                 var image = product.image;
                                 var quantity = items[index].numPieces;
                                 var total = price! * quantity!;
-
-                                totalPrice = totalPrice + total;
 
                                 return Card(
                                   margin: EdgeInsets.symmetric(
@@ -198,9 +210,26 @@ class _CartPageState extends State<CartPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Total: \$${totalPrice.toStringAsFixed(2)}',
-              style: Theme.of(context).textTheme.bodyText1,
+            Flexible(
+              child: FutureBuilder<double>(
+                future: CartUserRepository()
+                    .countUnpaidItemsPrice(AuthenticationProvider.userId ?? ''),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error.toString()}');
+                  } else {
+                    double? price = snapshot.data;
+                    return (price == null)
+                        ? Text("No Price", style: TextStyle(fontSize: 20.0))
+                        : Text(
+                            'Total: \$${price.toStringAsFixed(2)}',
+                            style: TextStyle(fontSize: 20.0),
+                          );
+                  }
+                },
+              ),
             ),
             ElevatedButton(
               onPressed: () async {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:shoe_shop_3/models/cart_user_model.dart';
+import 'package:shoe_shop_3/models/product_model.dart';
 
 import '../myclasses/api.dart';
 
@@ -248,41 +249,60 @@ class CartUserRepository {
   }
 }
 
-  // Future<List<CartUserModel>> getUnpaidItems() async {
-  //   try {
-  //     final response = await dio.get(
-  //       apiLink,
-  //       queryParameters: {
-  //         'q': jsonEncode({'isPaid': false})
-  //       },
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'x-apikey': apiKey,
-  //         },
-  //       ),
-  //     );
+Future<double> countUnpaidItemsPrice(String userId) async {
+  try {
+    final response = await dio.get(
+      apiLink,
+      queryParameters: {
+        'q': jsonEncode({'User_id': userId, 'IsPaid': false})
+      },
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
 
-  //     if (response.statusCode == 200) {
-  //       final data = response.data as List<dynamic>;
-  //       final unpaidItems = <CartUserModel>[];
-  //       for (var itemData in data) {
-  //         unpaidItems.add(CartUserModel.fromJson(itemData));
-  //       }
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      double totalPrice = 0;
+      List<Future<Response<dynamic>>> productFutures = []; // Update the type of productFutures
 
-  //       // Update the isPaid field of the retrieved items to true
-  //       for (var item in unpaidItems) {
-  //         item.isPaid = true;
-  //         await updateCart(item.id??'', item);
-  //       }
+      for (var itemData in data) {
+        CartUserModel item = CartUserModel.fromJson(itemData);
+        if (!item.isPaid!) {
+          Future<Response<dynamic>> productFuture = dio.get( // Update the type of productFuture
+            '$productsApiLink/${item.id}',
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+                'x-apikey': apiKey,
+              },
+            ),
+          );
+          productFutures.add(productFuture);
+        }
+      }
 
-  //       return unpaidItems;
-  //     } else {
-  //       throw Exception('Failed to fetch unpaid items');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+      if (productFutures.isNotEmpty) {
+        List<Response<dynamic>> productResponses = await Future.wait(productFutures);
 
+        for (var productResponse in productResponses) {
+          if (productResponse.statusCode == 200) {
+            final productData = productResponse.data as Map<String, dynamic>;
+            final product = ProductShoeModel.fromJson(productData);
+            totalPrice += product.price ?? 0;
+          }
+        }
+      }
+
+      return totalPrice;
+    } else {
+      throw Exception('Failed to fetch unpaid items');
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
 }
