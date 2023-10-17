@@ -136,7 +136,7 @@ class _LoginPage2State extends State<LoginPage2> {
                     onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
                         bool isAuthenticated = await user.authenticateUser(
-                            _emailController.text, _passwordController.text);
+                            _emailController.text.trim(), _passwordController.text.trim());
 
                         if (isAuthenticated) {
                           setState(() {

@@ -76,19 +76,20 @@ class _AddCreditCardNumberState extends State<AddCreditCardNumber> {
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState?.validate() ?? false) {
+                var newCredit = _creditCardController.text.trim();
                 bool isCreditExists = await users.isValueExists(
-                    'CreditCard', _creditCardController.text);
+                    'CreditCard', newCredit);
                 if (!isCreditExists) {
                   try {
                     UserModel updateCredit = await users.updateOneField(
                         widget.userId,
                         'CreditCard',
-                        '${_creditCardController.text}');
+                        '${newCredit}');
                     print(
-                        'User updated successfully: ${widget.userId}, credit: ${_creditCardController.text}');
+                        'User updated successfully: ${widget.userId}, credit: ${newCredit}');
                     setState(() {
                       AuthenticationProvider.userCreditCard =
-                          _creditCardController.text;
+                          newCredit;
                     });
                     Navigator.of(context).pop();
                     Navigator.of(context).pop();

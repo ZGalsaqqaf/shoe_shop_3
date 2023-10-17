@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   obscureText: _obscurePassword,
                   onChanged: (value) {
-                    _password = value;
+                    _password = value.trim();
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -173,8 +173,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      String _username = _usernameController.text;
-                      String _email = _emailController.text;
+                      String _username = _usernameController.text.trim();
+                      String _email = _emailController.text.trim();
                       bool isUsernameExists =
                           await users.isUsernameExists(_username);
                       bool isEmailExists = await users.isEmailExists(_email);
@@ -199,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       UserModel user = UserModel(
                         username: _username,
                         email: _email,
-                        password: _password,
+                        password: _password.trim(),
                       );
                       try {
                         UserModel addedUser = await users.addUser(user);

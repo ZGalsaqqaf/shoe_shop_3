@@ -155,8 +155,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
                             SizedBox(height: 16.0),
                             ElevatedButton(
                               onPressed: () async {
-                                String newUsername = _usernameController.text;
-                                String newCreditCard = _creditCardController.text;
+                                String newUsername = _usernameController.text.trim();
+                                String newCreditCard = _creditCardController.text.trim();
                       
                                 print('====${_imgController.text}');
                                 if (_formKey.currentState?.validate() ?? false) {
@@ -184,11 +184,11 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                   }
                       
                                   UserModel user = UserModel(
-                                    username: _usernameController.text,
+                                    username: newUsername,
                                     email: thisUser.email,
                                     password: thisUser.password,
                                     profile: _imgController.text,
-                                    creditCard: _creditCardController.text,
+                                    creditCard: newCreditCard,
                                   );
                                   try {
                                     UserModel addedUser = await users.updateUser(
@@ -197,7 +197,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                         'User updated successfully: ${addedUser.username}');
                                     setState(() {
                                       AuthenticationProvider.userName =
-                                          _usernameController.text;
+                                          newUsername;
                                       AuthenticationProvider.userProfile =
                                           _imgController.text;
                                       _isUserNameExist = false;

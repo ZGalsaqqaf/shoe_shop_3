@@ -174,11 +174,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   ),
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      String _username = _usernameController.text;
-                      String _email = _emailController.text;
+                      String _username = _usernameController.text.trim();
+                      String _email = _emailController.text.trim();
                       bool _isMatchUsernameAndPassword =
                           await users.UserNameAndEmailCheckMatching(
-                              _emailController.text, _usernameController.text);
+                              _email, _username);
 
                       if (_isMatchUsernameAndPassword) {
                         setState(() {
@@ -195,7 +195,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             "============= User matched.. id: ${uId}, username:${uName}, email: ${uEmail}");
                         try {
                           UserModel updateCredit = await users.updateOneField(
-                              uId ?? '', 'Password', '${_password}');
+                              uId ?? '', 'Password', '${_password.trim()}');
                           print(
                               'update password successfully: userId: ${_isMatchUsernameAndPassword}');
                           AuthenticationProvider.login(
