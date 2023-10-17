@@ -210,7 +210,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         });
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return LoginPage2(email: _email, password: _password, redirectPage: 'home',);
+                            return LoginPage2(
+                              email: _email,
+                              password: _password,
+                              redirectPage: 'home',
+                            );
                           }),
                         );
                         // Perform any desired actions after successful user addition
@@ -244,11 +248,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(height: 10.0),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return LoginPage();
-                      }),
-                    );
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return LoginPage2(
+                        email: "",
+                        password: "",
+                        redirectPage: 'home',
+                      );
+                    }));
                   },
                   child: Text(
                     'Already have an account? Login',
