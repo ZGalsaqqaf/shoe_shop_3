@@ -96,4 +96,36 @@ class CategoryRepository {
       rethrow;
     }
   } // end getByField
+
+  Future<List<CategoryModel>> getAllWithNoRepeated() async {
+    try {
+      await Future.delayed(Duration(seconds: 1));
+
+      var res = await dio.get(
+        apiLink,
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        }),
+      );
+      List<CategoryModel> items = [];
+      List<String> cateNames = [];
+      if (res.statusCode == 200) {
+        var data = res.data as List;
+        if (data.isNotEmpty) {
+          for (var item in data) {
+            var category = CategoryModel.fromJson(item);
+            if(!cateNames.contains(category.name)){
+            items.add(CategoryModel.fromJson(item));
+            cateNames.add(category.name!);
+            }
+          }
+        }
+      }
+      return items;
+    } catch (e) {
+      rethrow;
+    }
+  } // end getAll
+
 }

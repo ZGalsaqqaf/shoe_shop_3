@@ -28,6 +28,7 @@ Widget CustomDrawerWithAppMode(
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.6,
       child: ListView(
+        
         padding: EdgeInsets.zero,
         children: <Widget>[
           GestureDetector(
