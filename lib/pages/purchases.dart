@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/helper/auth_helper.dart';
-import 'package:shoe_shop_3/pages/item_edit.dart';
 import 'package:shoe_shop_3/reops/cart_user_repo.dart';
 
 import '../../widgets/custom_drawer_app_mode.dart';
@@ -8,7 +7,6 @@ import '../../widgets/search_appbar.dart';
 import '../models/cart_user_model.dart';
 import '../models/product_model.dart';
 import '../reops/product_repo.dart';
-import 'cart_delete.dart';
 import 'item_details.dart';
 
 class PurchasesPage extends StatefulWidget {
@@ -58,7 +56,21 @@ class _PurchasesPageState extends State<PurchasesPage> {
                   });
                 },
                 child: items.isEmpty
-                    ? Center(child: Text("No Data"))
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                  "assets/images/shop/shpping-img1.png"),
+                              height: 200,
+                              width: 200,
+                            ),
+                            SizedBox(height: 20,),
+                            Text("You haven't any purchases yet"),
+                          ],
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {

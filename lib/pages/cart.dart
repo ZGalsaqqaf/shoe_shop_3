@@ -73,7 +73,24 @@ class _CartPageState extends State<CartPage> {
                   setState(() {});
                 },
                 child: items.isEmpty
-                    ? Center(child: Text("Your Cart Is Empty"))
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage(
+                                  "assets/images/shop/shopping-cart1.png"),
+                              height: 200,
+                              width: 200,
+                            ),
+                            SizedBox(height: 20,),
+                            Container(
+                              margin: EdgeInsets.only(left: 50),
+                              child: Text("You're cart is empty"),
+                            ),
+                          ],
+                        ),
+                      )
                     : ListView.builder(
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
