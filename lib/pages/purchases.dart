@@ -96,8 +96,6 @@ class _PurchasesPageState extends State<PurchasesPage> {
                                 var quantity = items[index].numPieces;
                                 var total = price! * quantity!;
 
-                                totalPrice = totalPrice + total;
-
                                 return Card(
                                   color: Colors.grey[200],
                                   margin: EdgeInsets.symmetric(
@@ -150,7 +148,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
                                                     ),
                                                     SizedBox(height: 8.0),
                                                     Text(
-                                                      '\$${total.toString()}',
+                                                      '\$${total.toStringAsFixed(2)}',
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .headline1,

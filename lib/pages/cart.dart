@@ -167,7 +167,7 @@ class _CartPageState extends State<CartPage> {
                                                     ),
                                                     SizedBox(height: 8.0),
                                                     Text(
-                                                      '\$${total.toString()}',
+                                                      '\$${total.toStringAsFixed(2)}',
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .headline1,

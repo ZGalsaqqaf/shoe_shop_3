@@ -273,7 +273,7 @@ Future<double> countUnpaidItemsPrice(String userId) async {
         CartUserModel item = CartUserModel.fromJson(itemData);
         if (!item.isPaid!) {
           Future<Response<dynamic>> productFuture = dio.get( // Update the type of productFuture
-            '$productsApiLink/${item.id}',
+            '$productsApiLink/${item.prodId}',
             options: Options(
               headers: {
                 'Content-Type': 'application/json',

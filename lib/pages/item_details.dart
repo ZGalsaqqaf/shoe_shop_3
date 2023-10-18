@@ -137,7 +137,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
                         ),
                         itemShow("Price", "\$${prodPrice.toString()}"),
                         itemShow("Color", "${widget.cardItem.color}"),
-                        itemShow("Quantity", "${widget.cardItem.numPieces.toString()}"),
+                        itemShow("Size", "${widget.cardItem.size.toString()}"),
                         itemShow("Quantity", "${widget.cardItem.numPieces.toString()}"),
                         Divider(
                           color: Colors.grey,
