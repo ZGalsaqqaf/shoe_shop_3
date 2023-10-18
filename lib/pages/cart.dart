@@ -83,7 +83,9 @@ class _CartPageState extends State<CartPage> {
                               height: 200,
                               width: 200,
                             ),
-                            SizedBox(height: 20,),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Container(
                               margin: EdgeInsets.only(left: 50),
                               child: Text("You're cart is empty"),
@@ -224,98 +226,108 @@ class _CartPageState extends State<CartPage> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16.0),
         color: Theme.of(context).colorScheme.secondary,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: FutureBuilder<double>(
-                future: CartUserRepository()
-                    .countUnpaidItemsPrice(AuthenticationProvider.userId ?? ''),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error.toString()}');
-                  } else {
-                    double? price = snapshot.data;
-                    return (price == null)
-                        ? Text("No Price", style: TextStyle(fontSize: 20.0))
-                        : Text(
-                            'Total: \$${price.toStringAsFixed(2)}',
-                            style: TextStyle(fontSize: 20.0),
+        child: AuthenticationProvider.isLoggedIn.value
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: FutureBuilder<double>(
+                      future: CartUserRepository().countUnpaidItemsPrice(
+                          AuthenticationProvider.userId ?? ''),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error.toString()}');
+                        } else {
+                          double? price = snapshot.data;
+                          return (price == null)
+                              ? Text("No Price",
+                                  style: TextStyle(fontSize: 20.0))
+                              : Text(
+                                  'Total: \$${price.toStringAsFixed(2)}',
+                                  style: TextStyle(fontSize: 20.0),
+                                );
+                        }
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (AuthenticationProvider.userCreditCard != null &&
+                          AuthenticationProvider.userCreditCard != '') {
+                        try {
+                          print(
+                              "credit : ${AuthenticationProvider.userCreditCard}");
+                          List<CartUserModel> unpaidItems =
+                              await _cards.getUnpaidItems(
+                                  AuthenticationProvider.userId ?? '');
+                          setState(() {});
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return PurchasesPage();
+                            }),
                           );
-                  }
-                },
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (AuthenticationProvider.userCreditCard != null &&
-                    AuthenticationProvider.userCreditCard != '') {
-                  try {
-                    print("credit : ${AuthenticationProvider.userCreditCard}");
-                    List<CartUserModel> unpaidItems = await _cards
-                        .getUnpaidItems(AuthenticationProvider.userId ?? '');
-                    setState(() {});
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) {
-                        return PurchasesPage();
-                      }),
-                    );
-                  } catch (e) {
-                    print("Error accours: $e");
-                  }
-                } else {
-                  print("No Credit Card");
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(
-                          'Credit Card Required',
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        content: Text(
-                            "We don't have your credit card \nPlease Add it first to buy your purchases."),
-                        actions: <Widget>[
-                          TextButton(
-                            child: Text('Cancel'),
-                            onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
-                            },
-                          ),
-                          TextButton(
-                            child: Text('OK'),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) {
-                                  return AddCreditCardNumber(
-                                    userId: AuthenticationProvider.userId ?? '',
-                                  );
-                                }),
-                              ).then((_) {
-                                setState(() {
-                                  // Refresh the user account page here
-                                });
-                              });
-                              // Redirect to the login page or perform any other action
-                              // to handle the login process.
-                            },
-                          ),
-                        ],
-                      );
+                        } catch (e) {
+                          print("Error accours: $e");
+                        }
+                      } else {
+                        print("No Credit Card");
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Credit Card Required',
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary),
+                              ),
+                              content: Text(
+                                  "We don't have your credit card \nPlease Add it first to buy your purchases."),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                        return AddCreditCardNumber(
+                                          userId:
+                                              AuthenticationProvider.userId ??
+                                                  '',
+                                        );
+                                      }),
+                                    ).then((_) {
+                                      setState(() {
+                                        // Refresh the user account page here
+                                      });
+                                    });
+                                    // Redirect to the login page or perform any other action
+                                    // to handle the login process.
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     },
-                  );
-                }
-              },
-              child: Text(
-                'Checkout',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ),
-          ],
-        ),
+                    child: Text(
+                      'Checkout',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ),
+                ],
+              )
+            : Row(),
       ),
     );
   }
