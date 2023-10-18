@@ -252,6 +252,7 @@ class ProductShoeRepository {
     // Trim and convert to lowercase
     final searchValue = value.trim().toLowerCase();
 
+    // get all products
     final response = await dio.get(
       apiLink,
       options: Options(
@@ -266,6 +267,7 @@ class ProductShoeRepository {
       final products = <ProductShoeModel>[];
 
       for (var productData in data) {
+        // convert to object to search in it
         final product = ProductShoeModel.fromJson(productData);
 
         // Trim and convert to lowercase
