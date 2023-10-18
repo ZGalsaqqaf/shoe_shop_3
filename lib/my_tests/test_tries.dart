@@ -77,18 +77,18 @@ Widget TryCustomDrawerWithAppMode(
         ),
 
         Divider(),
-        ListTile(
-          leading: Icon(Icons.favorite),
-          title: Text('My Favorite'),
-          onTap: () {
-            // Handle Home navigation
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return FavoritePage();
-            }));
-          },
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.favorite),
+        //   title: Text('My Favorite'),
+        //   onTap: () {
+        //     // Handle Home navigation
+        //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        //       return FavoritePage();
+        //     }));
+        //   },
+        // ),
 
-        Divider(),
+        // Divider(),
         ListTile(
           leading: Icon(appModeIcon),
           title: Text("Dark Mode"),
