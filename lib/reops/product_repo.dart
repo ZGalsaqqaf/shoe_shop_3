@@ -43,33 +43,6 @@ class ProductShoeRepository {
     }
   } // end getAll
 
-  // Future<List<ProductShoeModel>> getAllExcept() async {
-  //   try {
-  //     await Future.delayed(Duration(seconds: 1));
-
-  //     var res = await dio.get(
-  //       apiLink,
-  //       options: Options(headers: {
-  //         'Content-Type': 'application/json',
-  //         'x-apikey': apiKey,
-  //       }),
-  //     );
-  //     List<ProductShoeModel> items = [];
-  //     if (res.statusCode == 200) {
-  //       var data = res.data as List;
-  //       if (data.isNotEmpty) {
-  //         for (var item in data) {
-  //           items.add(ProductShoeModel.fromJson(item));
-  //         }
-  //       }
-  //     }
-
-  //     return items;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // } // end getAllExcept
-
   Future<ProductShoeModel?> getById(String id) async {
     try {
       var res = await dio.get(
@@ -124,45 +97,6 @@ class ProductShoeRepository {
       rethrow;
     }
   } // end getByField
-
-  // Future<List<ProductShoeModel>> getByField2(
-  //     String field, String value, String fieldName1,
-  //     {String value2 = "", String fieldName2 = ""}) async {
-  //   try {
-  //     final response = await dio.get(
-  //       apiLink,
-  //       options: Options(
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'x-apikey': apiKey,
-  //         },
-  //       ),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final data = response.data as List<dynamic>;
-  //       final products = <ProductShoeModel>[];
-  //       for (var productData in data) {
-  //         final product = ProductShoeModel.fromJson(productData);
-
-  //         // Check if the product's category name matches the provided value
-  //         if (product.cateId != null && product.cateId!.isNotEmpty) {
-  //           for (var category in product.cateId!) {
-  //             if (category[fieldName1] == value) {
-  //               products.add(product);
-  //               break;
-  //             }
-  //           }
-  //         }
-  //       }
-  //       return products;
-  //     } else {
-  //       throw Exception('Failed to fetch products by field');
-  //     }
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
 
   Future<List<ProductShoeModel>> getByCateNameAndAudienceName(
       String value1, String value2) async {
@@ -312,4 +246,64 @@ class ProductShoeRepository {
       rethrow;
     }
   }
+
+  Future<List<ProductShoeModel>> search(String value) async {
+  try {
+    // Trim and convert to lowercase
+    final searchValue = value.trim().toLowerCase();
+
+    final response = await dio.get(
+      apiLink,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'x-apikey': apiKey,
+        },
+      ),
+    );
+    if (response.statusCode == 200) {
+      final data = response.data as List<dynamic>;
+      final products = <ProductShoeModel>[];
+
+      for (var productData in data) {
+        final product = ProductShoeModel.fromJson(productData);
+
+        // Trim and convert to lowercase
+        final categoryName = product.cateId?.map((categoryId) => (categoryId['Name'] as String).trim().toLowerCase()).toList();
+        final audienceName = product.audiId?.map((audienceId) => (audienceId['Name'] as String).trim().toLowerCase()).toList();
+
+        // Check if the product's category name or audience name matches the provided value
+        bool categoryMatched = false;
+        if (categoryName != null && categoryName.isNotEmpty) {
+          for (var category in categoryName) {
+            if (category == searchValue) {
+              categoryMatched = true;
+              break;
+            }
+          }
+        }
+        if (!categoryMatched && audienceName != null && audienceName.isNotEmpty) {
+          bool audienceMatched = false;
+          for (var audience in audienceName) {
+            if (audience == searchValue) {
+              audienceMatched = true;
+              break;
+            }
+          }
+          if (!audienceMatched) {
+            continue; // Skip to the next product if neither category nor audience matched
+          }
+        } else if (!categoryMatched && (audienceName == null || audienceName.isEmpty)) {
+          continue; // Skip to the next product if neither category nor audience available
+        }
+        products.add(product);
+      }
+      return products;
+    } else {
+      throw Exception('Failed to fetch products by field');
+    }
+  } catch (e) {
+    rethrow;
+  }
+}
 }

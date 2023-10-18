@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shoe_shop_3/pages/about.dart';
 import 'package:shoe_shop_3/pages/account.dart';
+import 'package:shoe_shop_3/pages/search.dart';
 
 import '../helper/auth_helper.dart';
 import '../pages/login.dart';
@@ -37,6 +38,9 @@ AppBar SearchAppBar(BuildContext context) {
             )),
         onSubmitted: (value) {
           // Perform search action with the submitted value
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return SearchPage(value: value);
+          }));
         },
       ),
     ),
@@ -46,7 +50,7 @@ AppBar SearchAppBar(BuildContext context) {
         child: isLoggedIn
             ? GestureDetector(
                 onTap: () {
-                    // print("============ ${AuthenticationProvider.userId} ==========");
+                  // print("============ ${AuthenticationProvider.userId} ==========");
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
                     return UserAccount();
@@ -54,9 +58,9 @@ AppBar SearchAppBar(BuildContext context) {
                 },
                 child: CircleAvatar(
                   backgroundImage: uProfile!.isNotEmpty
-                              ? MemoryImage(base64Decode(uProfile))
-                                  as ImageProvider<Object>?
-                              : AssetImage("assets/images/profiles/profile1.png"),
+                      ? MemoryImage(base64Decode(uProfile))
+                          as ImageProvider<Object>?
+                      : AssetImage("assets/images/profiles/profile1.png"),
                 ),
               )
             : GestureDetector(
