@@ -40,8 +40,8 @@ Widget CustomDrawerWithAppMode(
             },
             child: isLoggedIn
                 ? UserAccountsDrawerHeader(
-                    accountName: Text(uName ?? "Username"),
-                    accountEmail: Text(uEmail ?? "aa@gmail.com"),
+                    accountName: Text(uName ?? "..."),
+                    accountEmail: Text(uEmail ?? "..."),
                     currentAccountPicture: CircleAvatar(
                       backgroundImage: uProfile!.isNotEmpty
                               ? MemoryImage(base64Decode(uProfile))
@@ -53,8 +53,8 @@ Widget CustomDrawerWithAppMode(
                     ),
                   )
                 : UserAccountsDrawerHeader(
-                    accountName: Text("Username"),
-                    accountEmail: Text("aa@gmail.com"),
+                    accountName: Text("..."),
+                    accountEmail: Text("..."),
                     currentAccountPicture: CircleAvatar(
                       backgroundImage:
                           AssetImage("assets/images/profiles/profile1.png"),

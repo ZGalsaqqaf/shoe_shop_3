@@ -89,17 +89,17 @@ Widget CustomCardWithDiscount(BuildContext context, bool showDisCount, String pr
                   height: MediaQuery.of(context).size.height * 0.008,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "\$${price.toString()}",
                       style: Theme.of(context).textTheme.headline3,
                     ),
-                    Icon(
-                      Icons.favorite_outline,
-                      color: Colors.red,
-                      size: MediaQuery.of(context).size.width * 0.05,
-                    ),
+                    // Icon(
+                    //   Icons.favorite_outline,
+                    //   color: Colors.red,
+                    //   size: MediaQuery.of(context).size.width * 0.05,
+                    // ),
                   ],
                 ),
               ],
