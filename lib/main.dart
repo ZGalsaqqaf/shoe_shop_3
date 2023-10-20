@@ -1,13 +1,10 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoe_shop_3/home_bottom_nav_var.dart';
 import 'package:shoe_shop_3/reops/check_connection.dart';
 import 'package:shoe_shop_3/theme/app_theme.dart';
 import 'package:shoe_shop_3/theme/theme_provider.dart';
-import 'package:http/http.dart' as http;
 
-import 'myclasses/api.dart';
 
 void main() {
   runApp(
