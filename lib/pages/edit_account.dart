@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../helper/auth_helper.dart';
 import '../models/user_model.dart';
 import '../reops/user_repo.dart';
@@ -96,36 +95,46 @@ class _EditAccountPageState extends State<EditAccountPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            CircleAvatar(
-                              radius: 100.0,
-                              backgroundColor: Colors.black,
-                              backgroundImage: _imgController.text != null &&
-                                      _imgController.text.isNotEmpty
-                                  ? MemoryImage(base64Decode(_imgController.text))
-                                      as ImageProvider<Object>?
-                                  : userProfile != null && userProfile.isNotEmpty
-                                      ? MemoryImage(base64Decode(userProfile))
-                                          as ImageProvider<Object>?
-                                      : AssetImage(
-                                          "assets/images/profiles/profile1.png"),
-                            ),
-                            SizedBox(height: 16.0),
-                            ElevatedButton(
-                              onPressed: _selectImage,
-                              child: Text('Select Profile Picture'),
-                            ),
-                            SizedBox(height: 16.0),
-                            TextFormField(
-                              readOnly: true,
-                              controller: _imgController,
-                              decoration: InputDecoration(
-                                hintText: 'Select profile picture',
-                                hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                contentPadding: EdgeInsets.only(left: 60.0),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 100.0,
+                                    backgroundColor: Colors.black,
+                                    backgroundImage: _imgController.text !=
+                                                null &&
+                                            _imgController.text.isNotEmpty
+                                        ? MemoryImage(base64Decode(
+                                                _imgController.text))
+                                            as ImageProvider<Object>?
+                                        : userProfile != null &&
+                                                userProfile.isNotEmpty
+                                            ? MemoryImage(
+                                                    base64Decode(userProfile))
+                                                as ImageProvider<Object>?
+                                            : AssetImage(
+                                                "assets/images/profiles/profile1.png"),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: Colors.black, width: 2.0),
+                                    ),
+                                    child: CircleAvatar(
+                                      radius: 25.0,
+                                      backgroundColor:
+                                          Theme.of(context).colorScheme.primary,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit,
+                                            color: Colors.white),
+                                        onPressed: _selectImage,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                             SizedBox(height: 16.0),
@@ -155,11 +164,14 @@ class _EditAccountPageState extends State<EditAccountPage> {
                             SizedBox(height: 16.0),
                             ElevatedButton(
                               onPressed: () async {
-                                String newUsername = _usernameController.text.trim();
-                                String newCreditCard = _creditCardController.text.trim();
-                      
+                                String newUsername =
+                                    _usernameController.text.trim();
+                                String newCreditCard =
+                                    _creditCardController.text.trim();
+
                                 print('====${_imgController.text}');
-                                if (_formKey.currentState?.validate() ?? false) {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
                                   bool isUserNameExist =
                                       await users.isValueExistsOnAnotherId(
                                           thisUser.id ?? '',
@@ -182,7 +194,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                     });
                                     return;
                                   }
-                      
+
                                   UserModel user = UserModel(
                                     username: newUsername,
                                     email: thisUser.email,
@@ -191,8 +203,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                     creditCard: newCreditCard,
                                   );
                                   try {
-                                    UserModel addedUser = await users.updateUser(
-                                        thisUser.id ?? '', user);
+                                    UserModel addedUser = await users
+                                        .updateUser(thisUser.id ?? '', user);
                                     print(
                                         'User updated successfully: ${addedUser.username}');
                                     setState(() {
@@ -207,7 +219,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                   } catch (e) {
                                     print('Failed to update user: $e');
                                   }
-                                }else{
+                                } else {
                                   print("Form is invalid");
                                 }
                               },
