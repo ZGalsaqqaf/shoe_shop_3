@@ -39,30 +39,50 @@ Widget CustomDrawerWithAppMode(
               // }));
             },
             child: isLoggedIn
-                ? UserAccountsDrawerHeader(
-                    accountName: Text(uName ?? "..."),
-                    accountEmail: Text(uEmail ?? "..."),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: uProfile!.isNotEmpty
-                              ? MemoryImage(base64Decode(uProfile))
-                                  as ImageProvider<Object>?
-                              : AssetImage("assets/images/profiles/profile1.png"),
+                ? GestureDetector(
+                  onTap: (){
+                    Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return UserAccount();
+                  }));
+                  },
+                  child: UserAccountsDrawerHeader(
+                      accountName: Text(uName ?? "..."),
+                      accountEmail: Text(uEmail ?? "..."),
+                      currentAccountPicture: CircleAvatar(
+                        backgroundImage: uProfile!.isNotEmpty
+                                ? MemoryImage(base64Decode(uProfile))
+                                    as ImageProvider<Object>?
+                                : AssetImage("assets/images/profiles/profile1.png"),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
+                )
+                : GestureDetector(
+                  onTap: () {
+                    Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return LoginPage2(
+                      email: "",
+                      password: "",
+                      redirectPage: 'home',
+                    );
+                  }));
+                  },
+                  child: UserAccountsDrawerHeader(
+                      accountName: Text("..."),
+                      accountEmail: Text("..."),
+                      currentAccountPicture: CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/images/profiles/profile1.png"),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
-                  )
-                : UserAccountsDrawerHeader(
-                    accountName: Text("..."),
-                    accountEmail: Text("..."),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage:
-                          AssetImage("assets/images/profiles/profile1.png"),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
+                ),
             //////
           ),
           ListTile(

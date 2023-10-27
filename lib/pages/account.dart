@@ -63,7 +63,7 @@ class _UserAccountState extends State<UserAccount> {
                           // ),
                           // SizedBox(height: 30.0),
                           CircleAvatar(
-                            radius: 50.0,
+                            radius: 100.0,
                             backgroundColor: Colors.black,
                             backgroundImage: userProfile != null &&
                                     userProfile.isNotEmpty
