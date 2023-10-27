@@ -90,7 +90,7 @@ class _CustomItemSliderApiState extends State<CustomItemSliderApi> {
                 options: CarouselOptions(
                   aspectRatio: 16 / 9, // Set the desired aspect ratio
                   viewportFraction:
-                      0.75, // Set the desired item size as a fraction of the viewport
+                      0.95, // Set the desired item size as a fraction of the viewport
                   enableInfiniteScroll:
                       false, // Set to true if you want the slider to loop infinitely
                   initialPage: 0, // Set the initial page index

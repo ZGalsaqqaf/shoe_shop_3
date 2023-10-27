@@ -46,7 +46,6 @@ dependencies:
   dio: ^5.3.3
   intl: ^0.18.1
   connectivity: ^3.0.6
-  image_cropper: ^4.0.1
 
 flutter_native_splash:
   image: assets/images/shop/5shoeshop.png

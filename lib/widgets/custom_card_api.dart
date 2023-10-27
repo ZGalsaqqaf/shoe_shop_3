@@ -31,7 +31,7 @@ class CustomCard extends StatelessWidget {
                 width: double.infinity,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                 child: Text(
                   productName,
                   style: TextStyle(
@@ -42,18 +42,18 @@ class CustomCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                 child: Text(
                   details,
-                  style: TextStyle(fontSize: 16),
+                  style: Theme.of(context).textTheme.headline2,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
                 child: Text(
                   '\$${price.toStringAsFixed(2)}',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.primary,
                   ),
