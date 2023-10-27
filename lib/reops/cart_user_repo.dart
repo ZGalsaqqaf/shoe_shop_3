@@ -311,15 +311,36 @@ class CartUserRepository {
   }
 
   Future<double> calculateTotalPrice(List<CartUserModel> items) async {
-  double totalPrice = 0.0;
-  
-  for (var item in items) {
-    ProductShoeModel? product = await ProductShoeRepository().getById(item.prodId ?? '');
-    if (product != null && product.price != null && item.numPieces != null) {
-      totalPrice += product.price! * item.numPieces!;
+    double totalPrice = 0.0;
+
+    for (var item in items) {
+      ProductShoeModel? product =
+          await ProductShoeRepository().getById(item.prodId ?? '');
+      if (product != null && product.price != null && item.numPieces != null) {
+        totalPrice += product.price! * item.numPieces!;
+      }
+    }
+
+    return totalPrice;
+  }
+
+  Future<double> getTotalPriceOfUnpaidItems(String userId) async {
+    try {
+      final unpaidItems =
+          await getByFieldWithCheckIsPaid('User_id', userId, false);
+      double totalPrice = 0;
+
+      for (var item in unpaidItems) {
+        final product =
+            await ProductShoeRepository().getById(item.prodId ?? '');
+        if (product != null) {
+          totalPrice += product.price! * item.numPieces!;
+        }
+      }
+
+      return totalPrice;
+    } catch (e) {
+      throw Exception('Failed to calculate total price of unpaid items');
     }
   }
-  
-  return totalPrice;
-}
 }

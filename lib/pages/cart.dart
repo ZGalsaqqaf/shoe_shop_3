@@ -13,21 +13,13 @@ import 'add_creditcart_number.dart';
 import 'cart_delete.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  IconData appModeIcon = Icons.sunny;
-
-  void updateAppModeIcon(IconData newIcon) {
-    setState(() {
-      appModeIcon = newIcon;
-    });
-  }
-
   Future<double>? totalPrice;
 
   @override
@@ -43,7 +35,7 @@ class _CartPageState extends State<CartPage> {
   Future<double> _fetchCategoryData() async {
     final repository = CartUserRepository();
     return repository
-        .countUnpaidItemsPrice(AuthenticationProvider.userId ?? '');
+        .getTotalPriceOfUnpaidItems(AuthenticationProvider.userId ?? '');
   }
 
   Future<List<CartUserModel>>? _cardData;
@@ -51,8 +43,15 @@ class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
+    IconData appModeIcon = Icons.sunny;
+
+    void updateAppModeIcon(IconData newIcon) {
+      setState(() {
+        appModeIcon = newIcon;
+      });
+    }
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: SearchAppBar(context),
       drawer: CustomDrawerWithAppMode(context, updateAppModeIcon),
       body: Container(
@@ -227,105 +226,105 @@ class _CartPageState extends State<CartPage> {
         padding: EdgeInsets.all(16.0),
         color: Theme.of(context).colorScheme.secondary,
         child: AuthenticationProvider.isLoggedIn.value
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: FutureBuilder<double>(
-                      future: CartUserRepository().countUnpaidItemsPrice(
-                          AuthenticationProvider.userId ?? ''),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error.toString()}');
-                        } else {
-                          double? price = snapshot.data;
-                          return (price == null)
-                              ? Text("No Price",
-                                  style: TextStyle(fontSize: 20.0))
-                              : Text(
-                                  'Total: \$${price.toStringAsFixed(2)}',
-                                  style: TextStyle(fontSize: 20.0),
+            ? FutureBuilder<double>(
+                future: CartUserRepository().getTotalPriceOfUnpaidItems(
+                    AuthenticationProvider.userId ?? ''),
+                builder: (context, snapshot) {
+                  // if (snapshot.connectionState == ConnectionState.waiting) {
+                  //   return CircularProgressIndicator();
+                  // } else
+                  if (snapshot.hasError) {
+                    return Text("Error: ${snapshot.error.toString()}");
+                  } else {
+                    double totalPrice = snapshot.data ?? 0;
+                    print(
+                        "=====================Total price: ${totalPrice.toStringAsFixed(2)}");
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total: \$${totalPrice.toStringAsFixed(2)}',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).colorScheme.primary),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (AuthenticationProvider.userCreditCard != null &&
+                                AuthenticationProvider.userCreditCard != '') {
+                              try {
+                                print(
+                                    "credit : ${AuthenticationProvider.userCreditCard}");
+                                // empty the cart
+                                List<CartUserModel> unpaidItems =
+                                    await _cards.getUnpaidItems(
+                                        AuthenticationProvider.userId ?? '');
+                                setState(() {});
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) {
+                                    return PurchasesPage();
+                                  }),
                                 );
-                        }
-                      },
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (AuthenticationProvider.userCreditCard != null &&
-                          AuthenticationProvider.userCreditCard != '') {
-                        try {
-                          print(
-                              "credit : ${AuthenticationProvider.userCreditCard}");
-                          List<CartUserModel> unpaidItems =
-                              await _cards.getUnpaidItems(
-                                  AuthenticationProvider.userId ?? '');
-                          setState(() {});
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return PurchasesPage();
-                            }),
-                          );
-                        } catch (e) {
-                          print("Error accours: $e");
-                        }
-                      } else {
-                        print("No Credit Card");
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(
-                                'Credit Card Required',
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary),
-                              ),
-                              content: Text(
-                                  "We don't have your credit card \nPlease Add it first to buy your purchases."),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) {
-                                        return AddCreditCardNumber(
-                                          userId:
-                                              AuthenticationProvider.userId ??
-                                                  '',
-                                        );
-                                      }),
-                                    ).then((_) {
-                                      setState(() {
-                                        // Refresh the user account page here
-                                      });
-                                    });
-                                    // Redirect to the login page or perform any other action
-                                    // to handle the login process.
-                                  },
-                                ),
-                              ],
-                            );
+                              } catch (e) {
+                                print("Error occurs: $e");
+                              }
+                            } else {
+                              print("No Credit Card");
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Credit Card Required',
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                    ),
+                                    content: Text(
+                                        "We don't have your credit card \nPlease Add it first to buy your purchases."),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Close the dialog
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                              return AddCreditCardNumber(
+                                                userId: AuthenticationProvider
+                                                        .userId ??
+                                                    '',
+                                              );
+                                            }),
+                                          ).then((_) {
+                                            setState(() {
+                                              // Refresh the UI after adding the credit card
+                                            });
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           },
-                        );
-                      }
-                    },
-                    child: Text(
-                      'Checkout',
-                      style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ),
-                ],
+                          child: Text(
+                            'Checkout',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                },
               )
             : Row(),
       ),
