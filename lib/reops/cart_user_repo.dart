@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import 'package:shoe_shop_3/models/cart_user_model.dart';
 import 'package:shoe_shop_3/models/product_model.dart';
 import 'package:shoe_shop_3/reops/product_repo.dart';
@@ -238,6 +239,7 @@ class CartUserRepository {
         // Update the isPaid field of the retrieved items to true
         for (var item in unpaidItems) {
           item.isPaid = true;
+          item.date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
           await updateCart(item.id ?? '', item);
         }
 

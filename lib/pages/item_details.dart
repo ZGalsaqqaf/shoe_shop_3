@@ -108,7 +108,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
                           productImage: prodImage ?? '',
                         ),
                         SizedBox(height: 10.0),
-                        Text("Date of adding: ${formattedDate()}", style: TextStyle(color: Colors.grey),),
+                        Text("Date of buying: ${formattedDate()}", style: TextStyle(color: Colors.grey),),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Divider(
