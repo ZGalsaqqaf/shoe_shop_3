@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 List<String> colors = [
     'Black',
-    'White',
     'Brown',
+    'White',
+    'Grey',
     'Red',
+    'Pink',
     'Blue',
     'Green',
     'Yellow',
@@ -26,6 +28,10 @@ Color getColorFromName(String colorName) {
         return Colors.white;
         case 'Brown':
         return Colors.brown;
+      case 'Grey':
+        return Colors.grey[700]!;
+      case 'Pink':
+        return Colors.pink;
       default:
         return Colors.black;
     }
