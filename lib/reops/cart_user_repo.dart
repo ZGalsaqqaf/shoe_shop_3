@@ -250,79 +250,79 @@ class CartUserRepository {
     }
   }
 
-  Future<double> countUnpaidItemsPrice(String userId) async {
-    try {
-      final response = await dio.get(
-        apiLink,
-        queryParameters: {
-          'q': jsonEncode({'User_id': userId, 'IsPaid': false})
-        },
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'x-apikey': apiKey,
-          },
-        ),
-      );
+  // Future<double> countUnpaidItemsPrice(String userId) async {
+  //   try {
+  //     final response = await dio.get(
+  //       apiLink,
+  //       queryParameters: {
+  //         'q': jsonEncode({'User_id': userId, 'IsPaid': false})
+  //       },
+  //       options: Options(
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'x-apikey': apiKey,
+  //         },
+  //       ),
+  //     );
 
-      if (response.statusCode == 200) {
-        final data = response.data as List<dynamic>;
-        double totalPrice = 0;
-        List<Future<Response<dynamic>>> productFutures =
-            []; // Update the type of productFutures
+  //     if (response.statusCode == 200) {
+  //       final data = response.data as List<dynamic>;
+  //       double totalPrice = 0;
+  //       List<Future<Response<dynamic>>> productFutures =
+  //           []; // Update the type of productFutures
 
-        for (var itemData in data) {
-          CartUserModel item = CartUserModel.fromJson(itemData);
-          if (!item.isPaid!) {
-            Future<Response<dynamic>> productFuture = dio.get(
-              // Update the type of productFuture
-              '$productsApiLink/${item.prodId}',
-              options: Options(
-                headers: {
-                  'Content-Type': 'application/json',
-                  'x-apikey': apiKey,
-                },
-              ),
-            );
-            productFutures.add(productFuture);
-          }
-        }
+  //       for (var itemData in data) {
+  //         CartUserModel item = CartUserModel.fromJson(itemData);
+  //         if (!item.isPaid!) {
+  //           Future<Response<dynamic>> productFuture = dio.get(
+  //             // Update the type of productFuture
+  //             '$productsApiLink/${item.prodId}',
+  //             options: Options(
+  //               headers: {
+  //                 'Content-Type': 'application/json',
+  //                 'x-apikey': apiKey,
+  //               },
+  //             ),
+  //           );
+  //           productFutures.add(productFuture);
+  //         }
+  //       }
 
-        if (productFutures.isNotEmpty) {
-          List<Response<dynamic>> productResponses =
-              await Future.wait(productFutures);
+  //       if (productFutures.isNotEmpty) {
+  //         List<Response<dynamic>> productResponses =
+  //             await Future.wait(productFutures);
 
-          for (var productResponse in productResponses) {
-            if (productResponse.statusCode == 200) {
-              final productData = productResponse.data as Map<String, dynamic>;
-              final product = ProductShoeModel.fromJson(productData);
-              totalPrice += product.price ?? 0;
-            }
-          }
-        }
+  //         for (var productResponse in productResponses) {
+  //           if (productResponse.statusCode == 200) {
+  //             final productData = productResponse.data as Map<String, dynamic>;
+  //             final product = ProductShoeModel.fromJson(productData);
+  //             totalPrice += product.price ?? 0;
+  //           }
+  //         }
+  //       }
 
-        return totalPrice;
-      } else {
-        throw Exception('Failed to fetch unpaid items');
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //       return totalPrice;
+  //     } else {
+  //       throw Exception('Failed to fetch unpaid items');
+  //     }
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
-  Future<double> calculateTotalPrice(List<CartUserModel> items) async {
-    double totalPrice = 0.0;
+  // Future<double> calculateTotalPrice(List<CartUserModel> items) async {
+  //   double totalPrice = 0.0;
 
-    for (var item in items) {
-      ProductShoeModel? product =
-          await ProductShoeRepository().getById(item.prodId ?? '');
-      if (product != null && product.price != null && item.numPieces != null) {
-        totalPrice += product.price! * item.numPieces!;
-      }
-    }
+  //   for (var item in items) {
+  //     ProductShoeModel? product =
+  //         await ProductShoeRepository().getById(item.prodId ?? '');
+  //     if (product != null && product.price != null && item.numPieces != null) {
+  //       totalPrice += product.price! * item.numPieces!;
+  //     }
+  //   }
 
-    return totalPrice;
-  }
+  //   return totalPrice;
+  // }
 
   Future<double> getTotalPriceOfUnpaidItems(String userId) async {
     try {
