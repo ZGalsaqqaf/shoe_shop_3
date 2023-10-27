@@ -97,7 +97,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CircleAvatar(
-                              radius: 50.0,
+                              radius: 100.0,
                               backgroundColor: Colors.black,
                               backgroundImage: _imgController.text != null &&
                                       _imgController.text.isNotEmpty

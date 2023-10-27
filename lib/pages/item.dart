@@ -355,19 +355,11 @@ class _ItemPageState extends State<ItemPage> {
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
+        textAlign: TextAlign.center,
       ),
       duration: Duration(seconds: 2),
-      backgroundColor: Theme.of(context)
-          .colorScheme
-          .primary, // Set the background color to blue
-      action: SnackBarAction(
-        label: 'Undo',
-        textColor: Colors.white,
-        onPressed: () {
-          // Perform undo action here
-        },
-      ),
-      elevation: 8.0, // Set the elevation to make the SnackBar floating
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      elevation: 8.0,
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
