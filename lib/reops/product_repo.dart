@@ -247,6 +247,77 @@ class ProductShoeRepository {
     }
   }
 
+  Future<List<ProductShoeModel>> search_old(String value) async {
+    try {
+      // Trim and convert to lowercase
+      final searchValue = value.trim().toLowerCase();
+
+      // get all products
+      final response = await dio.get(
+        apiLink,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        final data = response.data as List<dynamic>;
+        final products = <ProductShoeModel>[];
+
+        for (var productData in data) {
+          // convert to object to search in it
+          final product = ProductShoeModel.fromJson(productData);
+
+          // Trim and convert to lowercase
+          final categoryName = product.cateId
+              ?.map((categoryId) =>
+                  (categoryId['Name'] as String).trim().toLowerCase())
+              .toList();
+          final audienceName = product.audiId
+              ?.map((audienceId) =>
+                  (audienceId['Name'] as String).trim().toLowerCase())
+              .toList();
+
+          // Check if the product's category name or audience name matches the provided value
+          bool categoryMatched = false;
+          if (categoryName != null && categoryName.isNotEmpty) {
+            for (var category in categoryName) {
+              if (category == searchValue) {
+                categoryMatched = true;
+                break;
+              }
+            }
+          }
+          if (!categoryMatched &&
+              audienceName != null &&
+              audienceName.isNotEmpty) {
+            bool audienceMatched = false;
+            for (var audience in audienceName) {
+              if (audience == searchValue) {
+                audienceMatched = true;
+                break;
+              }
+            }
+            if (!audienceMatched) {
+              continue; // Skip to the next product if neither category nor audience matched
+            }
+          } else if (!categoryMatched &&
+              (audienceName == null || audienceName.isEmpty)) {
+            continue; // Skip to the next product if neither category nor audience available
+          }
+          products.add(product);
+        }
+        return products;
+      } else {
+        throw Exception('Failed to fetch products by field');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<List<ProductShoeModel>> search(String value) async {
   try {
     // Trim and convert to lowercase
@@ -271,23 +342,31 @@ class ProductShoeRepository {
         final product = ProductShoeModel.fromJson(productData);
 
         // Trim and convert to lowercase
-        final categoryName = product.cateId?.map((categoryId) => (categoryId['Name'] as String).trim().toLowerCase()).toList();
-        final audienceName = product.audiId?.map((audienceId) => (audienceId['Name'] as String).trim().toLowerCase()).toList();
+        final categoryName = product.cateId
+            ?.map((categoryId) =>
+                (categoryId['Name'] as String).trim().toLowerCase())
+            .toList();
+        final audienceName = product.audiId
+            ?.map((audienceId) =>
+                (audienceId['Name'] as String).trim().toLowerCase())
+            .toList();
 
-        // Check if the product's category name or audience name matches the provided value
+        // Check if the product's category name or audience name contains the provided value
         bool categoryMatched = false;
         if (categoryName != null && categoryName.isNotEmpty) {
           for (var category in categoryName) {
-            if (category == searchValue) {
+            if (category.contains(searchValue)) {
               categoryMatched = true;
               break;
             }
           }
         }
-        if (!categoryMatched && audienceName != null && audienceName.isNotEmpty) {
+        if (!categoryMatched &&
+            audienceName != null &&
+            audienceName.isNotEmpty) {
           bool audienceMatched = false;
           for (var audience in audienceName) {
-            if (audience == searchValue) {
+            if (audience.contains(searchValue)) {
               audienceMatched = true;
               break;
             }
@@ -295,7 +374,8 @@ class ProductShoeRepository {
           if (!audienceMatched) {
             continue; // Skip to the next product if neither category nor audience matched
           }
-        } else if (!categoryMatched && (audienceName == null || audienceName.isEmpty)) {
+        } else if (!categoryMatched &&
+            (audienceName == null || audienceName.isEmpty)) {
           continue; // Skip to the next product if neither category nor audience available
         }
         products.add(product);
