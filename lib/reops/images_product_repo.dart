@@ -36,6 +36,7 @@ class ImagesProductRepository {
 
           for (var item in data) {
             ImagesProductModel img = ImagesProductModel.fromJson(item);
+            // prevant repeat images for the same product
             String pid = img.prodId![0].id??'';
             if (!prodsId.contains(pid)) {
               items.add(ImagesProductModel.fromJson(item));
