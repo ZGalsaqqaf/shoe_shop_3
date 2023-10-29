@@ -16,7 +16,7 @@ class ImagesProductRepository {
     dio.options.responseType = ResponseType.json;
   }
 
-  Future<List<ImagesProductModel>> getAll() async {
+  Future<List<ImagesProductModel>> getAll(int limit) async {
     try {
       await Future.delayed(Duration(seconds: 1));
 
@@ -30,9 +30,21 @@ class ImagesProductRepository {
       List<ImagesProductModel> items = [];
       if (res.statusCode == 200) {
         var data = res.data as List;
+        List<String> prodsId = [];
         if (data.isNotEmpty) {
+          var i = 0;
+
           for (var item in data) {
-            items.add(ImagesProductModel.fromJson(item));
+            ImagesProductModel img = ImagesProductModel.fromJson(item);
+            String pid = img.prodId![0].id??'';
+            if (!prodsId.contains(pid)) {
+              items.add(ImagesProductModel.fromJson(item));
+              prodsId.add(pid);
+              i++;
+              if (limit == i) {
+                break;
+              }
+            }
           }
         }
       }
@@ -68,53 +80,55 @@ class ImagesProductRepository {
   } // end getById
 
   Future<List<ImagesProductModel>> getImagesByProductId(String value1) async {
-  try {
-    final response = await dio.get(
-      apiLink,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'x-apikey': apiKey,
-        },
-      ),
-    );
+    try {
+      final response = await dio.get(
+        apiLink,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'x-apikey': apiKey,
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      final data = response.data as List<dynamic>;
-      final products = <ImagesProductModel>[];
+      if (response.statusCode == 200) {
+        final data = response.data as List<dynamic>;
+        final products = <ImagesProductModel>[];
 
-      for (var productData in data) {
-        final productImages = ImagesProductModel.fromJson(productData);
+        for (var productData in data) {
+          final productImages = ImagesProductModel.fromJson(productData);
 
-        // Check if the product's Prod_id matches the provided value1
-        if (productImages.prodId != null && productImages.prodId!.isNotEmpty) {
-          bool productMatched = false;
-          for (var prodId in productImages.prodId!) {
-            if (prodId.id == value1) {
-              productMatched = true;
-              break;
+          // Check if the product's Prod_id matches the provided value1
+          if (productImages.prodId != null &&
+              productImages.prodId!.isNotEmpty) {
+            bool productMatched = false;
+            for (var prodId in productImages.prodId!) {
+              if (prodId.id == value1) {
+                productMatched = true;
+                break;
+              }
+            }
+            if (!productMatched) {
+              continue; // Skip to the next product if the product ID didn't match
             }
           }
-          if (!productMatched) {
-            continue; // Skip to the next product if the product ID didn't match
-          }
+
+          // Check if any additional conditions need to be applied, such as value2
+
+          products.add(productImages);
         }
 
-        // Check if any additional conditions need to be applied, such as value2
-
-        products.add(productImages);
+        return products;
+      } else {
+        throw Exception('Failed to fetch products by product ID');
       }
-
-      return products;
-    } else {
-      throw Exception('Failed to fetch products by product ID');
+    } catch (e) {
+      rethrow;
     }
-  } catch (e) {
-    rethrow;
   }
-}
 
-  Future<List<ImagesProductModel>> getByField(String field, String value) async {
+  Future<List<ImagesProductModel>> getByField(
+      String field, String value) async {
     try {
       final response = await dio.get(
         apiLink,

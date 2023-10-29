@@ -21,7 +21,7 @@ class _CustomHomeSliderState extends State<CustomHomeSlider> {
 
   Future<List<ImagesProductModel>> _fetchImageData() async {
     final repository = ImagesProductRepository();
-    return repository.getAll();
+    return repository.getAll(10);
   }
 
   @override

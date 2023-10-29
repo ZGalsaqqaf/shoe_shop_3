@@ -105,7 +105,7 @@ class _ItemDetailsPageState extends State<ItemDetailsPage> {
                       children: [
                         CustomItemSliderApi(
                           value: widget.prodId,
-                          productImage: prodImage ?? '',
+                          productImage: prodImage ?? '', // send the prod img to show it if there is no images in prodimg table
                         ),
                         SizedBox(height: 10.0),
                         Text("Date of buying: ${formattedDate()}", style: TextStyle(color: Colors.grey),),
